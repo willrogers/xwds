@@ -1,34 +1,34 @@
-import { Link } from "gatsby"
 import PropTypes from "prop-types"
 import React from "react"
 
 const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      background: `rebeccapurple`,
-      marginBottom: `1.45rem`,
-    }}
-  >
-    <div
-      style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
-      }}
-    >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
-        >
-          {siteTitle}
-        </Link>
-      </h1>
+  <div id="header">
+    <div id="menu">
+      <div id="logo">
+        <div id="monkey">
+          <img src="https://wllrg.rs/static/monkey.png" alt="monkey" />
+        </div>
+        <div id="name-logo">
+          <a href="/index.html">Will Rogers</a>
+        </div>
+      </div>
+      <label id="toggle-label"></label>
+      <input type="checkbox" id="toggle-menu" name="toggle-label" checked />
+      <nav>
+        <div id="menu-header">
+          <a href="/index.html">WR</a>
+          <img src="/static/monkey.png" alt="monkey" />
+        </div>
+        <ul class="nav-items">
+          <li class="header-nav-item"><a href="https://wllrg.rs/index.html">Blog</a></li>
+          <li class="header-nav-item"><a href="https://wllrg.rs/about.html">About</a></li>
+          <li class="header-nav-item"><a href="/">Crosswords</a></li>
+          <li class="header-nav-item"><a href="https://github.com/willrogers">Github</a></li>
+          <li class="header-nav-item"><a href="https://wllrg.rs/links.html">Links</a></li>
+        </ul>
+      </nav>
     </div>
-  </header>
+  </div>
 )
 
 Header.propTypes = {
