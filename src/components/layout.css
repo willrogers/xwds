@@ -1,1 +1,4 @@
-/* Any css specific for this sub-site. */
+/* The global style is loaded from https://wllrg.rs using 
+   React Helmet.
+
+   Any css specific for this sub-site will go in this file. */
