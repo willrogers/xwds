@@ -1,8 +1,9 @@
 module.exports = {
   siteMetadata: {
-    title: `Some crosswords`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: `Crosswords`,
+    description: `A subsite for rendering crosswords using Gatsby.`,
+    author: `@willrogers`,
+    parentUrl: `https://wllrg.rs`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

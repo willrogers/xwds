@@ -14,6 +14,7 @@ const Layout = ({ children }) => (
         site {
           siteMetadata {
             title
+            parentUrl
           }
         }
       }
@@ -23,8 +24,11 @@ const Layout = ({ children }) => (
         <Helmet>
           <link type="text/css" rel="stylesheet" href="https://wllrg.rs/css/style.css" />
           <link href="https://fonts.googleapis.com/css?family=Mukta+Mahee%7CRaleway" rel="stylesheet" />
+          <link rel="icon" type="image/png" sizes="32x32" href={`${data.site.siteMetadata.parentUrl}/favicon-32x32.png`} />
+          <link rel="icon" type="image/png" sizes="16x16" href={`${data.site.siteMetadata.parentUrl}/favicon-16x16.png`} />
+          <link rel="shortcut icon" href="favicon.ico?" />
         </Helmet>
-        <Header siteTitle={data.site.siteMetadata.title} />
+        <Header parentUrl={data.site.siteMetadata.parentUrl} />
         <div
           style={{
             margin: `0 auto`,

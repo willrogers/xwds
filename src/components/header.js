@@ -1,15 +1,15 @@
 import PropTypes from "prop-types"
 import React from "react"
 
-const Header = ({ siteTitle }) => (
+const Header = ({ parentUrl }) => (
   <div id="header">
     <div id="menu">
       <div id="logo">
         <div id="monkey">
-          <img src="https://wllrg.rs/static/monkey.png" alt="monkey" />
+          <img src={parentUrl + '/static/monkey.png'} alt="monkey" />
         </div>
         <div id="name-logo">
-          <a href="/index.html">Will Rogers</a>
+          <a href={parentUrl + "/index.html"}>Will Rogers</a>
         </div>
       </div>
       <label id="toggle-label"></label>
@@ -20,11 +20,11 @@ const Header = ({ siteTitle }) => (
           <img src="/static/monkey.png" alt="monkey" />
         </div>
         <ul class="nav-items">
-          <li class="header-nav-item"><a href="https://wllrg.rs/index.html">Blog</a></li>
-          <li class="header-nav-item"><a href="https://wllrg.rs/about.html">About</a></li>
+          <li class="header-nav-item"><a href={parentUrl + "/index.html"}>Blog</a></li>
+          <li class="header-nav-item"><a href={parentUrl + "/about.html"}>About</a></li>
           <li class="header-nav-item"><a href="/">Crosswords</a></li>
           <li class="header-nav-item"><a href="https://github.com/willrogers">Github</a></li>
-          <li class="header-nav-item"><a href="https://wllrg.rs/links.html">Links</a></li>
+          <li class="header-nav-item"><a href={parentUrl + "/links.html"}>Links</a></li>
         </ul>
       </nav>
     </div>
