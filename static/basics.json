@@ -1,0 +1,47 @@
+[
+    {
+        "definition": "about",
+        "values": [
+            ["c", "circa"],
+            ["ca", "circa"],
+            ["on", ""],
+            ["re", ""]
+        ]
+    },
+    {
+        "definition": "account",
+        "values": [
+            ["ac", "a/c, abbreviation"]
+        ]
+    },
+    {
+        "definition": "bill",
+        "values": [
+            ["ac", "account"],
+            ["ad", "advertisement"]
+        ]
+    },
+    {
+        "definition": "books",
+        "values": [
+            ["nt", "new testament"],
+            ["ot", "old testament"]
+        ]
+    },
+    {
+        "definition": "love",
+        "values": [
+            ["o", "zero in tennis"]
+        ]
+    },
+    {
+        "definition": "street",
+        "values": [
+            ["st", ""]
+        ]
+    }
+]
+
+
+
+
