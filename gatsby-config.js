@@ -5,6 +5,7 @@ module.exports = {
     author: `@willrogers`,
     parentUrl: `https://wllrg.rs`,
   },
+  pathPrefix: "/static",
   plugins: [
     `gatsby-plugin-react-helmet`,
     {
