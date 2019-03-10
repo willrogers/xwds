@@ -1,15 +1,13 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { withPrefix } from "gatsby";
 
 /* Copied to match main.html from the main site. */
 
 class Header extends React.Component {
 
   componentDidMount() {
-    console.log("header mounting");
     const script = document.createElement("script");
-    script.src = withPrefix("/menu.js");
+    script.src = this.props.parentUrl + "/js/menu.js";
     script.async = true;
     document.body.appendChild(script);
   }
