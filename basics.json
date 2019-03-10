@@ -29,9 +29,21 @@
         ]
     },
     {
+        "definition": "engineers",
+        "values": [
+            ["re", "Royal Engineers"]
+        ]
+    },
+    {
         "definition": "love",
         "values": [
             ["o", "zero in tennis"]
+        ]
+    },
+    {
+        "definition": "soldier",
+        "values": [
+            ["gi", ""]
         ]
     },
     {
