@@ -41,6 +41,25 @@
         ]
     },
     {
+        "definition": "note",
+        "values": [
+            ["a", "musical note"],
+            ["b", "musical note"],
+            ["c", "musical note"],
+            ["d", "musical note"],
+            ["e", "musical note"],
+            ["f", "musical note"],
+            ["g", "musical note"],
+            ["do", "musical note"],
+            ["re", "musical note"],
+            ["mi", "musical note"],
+            ["fa", "musical note"],
+            ["so", "musical note"],
+            ["la", "musical note"],
+            ["ti", "musical note"]
+        ]
+    },
+    {
         "definition": "soldier",
         "values": [
             ["gi", ""]
