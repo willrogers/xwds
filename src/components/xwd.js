@@ -10,7 +10,8 @@ function clueSeq(x, y, length, direction) {
 
 function cellInArray(array, cell) {
   for (var k = 0; k < array.length; k++) {
-    if (array[k][0] === cell.x && array[k][1] === cell.y) {
+    const { x, y } = array[k];
+    if (x === cell.x && y === cell.y) {
       return true;
     }
   }
@@ -145,6 +146,23 @@ export function Grid(props) {
     }
   }
   const clues = figureOutClues(props.h, props.v, whiteCells);
+  console.log(clues);
+  const clueCells = {};
+  for (let [key, value] of Object.entries(clues["acrossClues"])) {
+    clueCells[key] = coord(value.x, value.y);
+  }
+  for (let [key, value] of Object.entries(clues["downClues"])) {
+    clueCells[key] = coord(value.x, value.y);
+  }
+  console.log(clueCells);
+  for (let k = 0; k < cells.length; k++) {
+    const [x, y] = cells[k];
+    for (let [key, value] of Object.entries(clueCells)) {
+      if (value.x === x && value.y === y) {
+        cells[k].push(key);
+      }
+    }
+  }
   return (
     <div
       style={{
@@ -153,7 +171,7 @@ export function Grid(props) {
         height: props.v * 20 + "px"
       }}
     >
-      {cells.map(([i, j, blackCell]) => {
+      {cells.map(([i, j, blackCell, number]) => {
         if (blackCell) {
           return (
             <FilledCell
@@ -172,7 +190,7 @@ export function Grid(props) {
               x={i * 20}
               y={j * 20}
               key={i + props.h * j}
-              number={1}
+              number={number}
               onClick={e => setSelectedCell(coord(i, j))}
             />
           );
