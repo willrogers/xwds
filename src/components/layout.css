@@ -22,7 +22,10 @@
   padding: 0;
   text-align: center;
   text-transform: uppercase;
+  text-shadow: 0 0 0 black;
+  color: transparent;
   outline: none;
+  cursor: default;
 }
 .white-cell:first-line {
   display: inline-block;
