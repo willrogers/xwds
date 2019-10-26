@@ -120,6 +120,7 @@ export function EmptyCell(props) {
   const handleKeyPress = event => {
     console.log("pressed " + event.key);
     setContents(event.key);
+    props.selectNextCell();
   };
   let backgroundColor = props.selected
     ? "cyan"
@@ -138,6 +139,7 @@ export function EmptyCell(props) {
           left: props.x + "px",
           backgroundColor: backgroundColor
         }}
+        ref={input => input && props.selected && input.focus()}
         onClick={props.onClick}
         className="white-cell"
         type="text"
@@ -166,6 +168,8 @@ export function Grid(props) {
   const [selectedCell, setSelectedCell] = useState(null);
   const cells = [];
   const whiteCells = [];
+  const cellHeight = 30;
+  const cellWidth = 30;
 
   for (let i = 0; i < props.h; i++) {
     for (let j = 0; j < props.v; j++) {
@@ -246,6 +250,20 @@ export function Grid(props) {
     setHighightedCells1(highlightedCells);
   }
 
+  function selectNextCell() {
+    const { x, y } = selectedCell;
+    if (selectedClue.direction === AC) {
+      if (x !== selectedClue.x + selectedClue.length - 1) {
+        setSelectedCell(coord(x + 1, y));
+      }
+    }
+    if (selectedClue.direction === DN) {
+      if (y !== selectedClue.y + selectedClue.length - 1) {
+        setSelectedCell(coord(x, y + 1));
+      }
+    }
+  }
+
   console.log(clueCells);
   console.log("highlights");
   console.log(highlightedCells1);
@@ -271,37 +289,63 @@ export function Grid(props) {
     <div
       style={{
         position: "relative",
-        width: props.h * 20 + "px",
-        height: props.v * 20 + "px"
+        width: props.h * cellWidth + "px",
+        height: props.v * cellHeight + "px"
       }}
     >
       {cells.map(([i, j, blackCell, number, highlight]) => {
         if (blackCell) {
           return (
             <FilledCell
-              h={20}
-              v={20}
-              x={i * 20}
-              y={j * 20}
+              h={cellWidth}
+              v={cellHeight}
+              x={i * cellWidth}
+              y={j * cellHeight}
               key={i + props.h * j}
             />
           );
         } else {
           return (
             <EmptyCell
-              h={20}
-              v={20}
-              x={i * 20}
-              y={j * 20}
+              h={cellWidth}
+              v={cellHeight}
+              x={i * cellWidth}
+              y={j * cellHeight}
               key={i + props.h * j}
               number={number}
               highlight={highlight}
-              selected={i === selectedCell.x && j === selectedCell.y}
+              selected={
+                selectedCell !== null &&
+                i === selectedCell.x &&
+                j === selectedCell.y
+              }
               onClick={e => doHighlight(coord(i, j))}
+              selectNextCell={selectNextCell}
             />
           );
         }
       })}
+    </div>
+  );
+}
+
+export function ClueBox(props) {
+  return (
+    <div style={{ fontWeight: "bold" }}>
+      {props.direction}
+      {Object.entries(props.clues).map(entry => {
+        const [number, vals] = entry;
+        const [words, len, date] = vals;
+        return <Clue number={number} clue={words} len={len} />;
+      })}
+    </div>
+  );
+}
+
+export function Clue(props) {
+  return (
+    <div>
+      {props.number}. {props.clue} ({props.len})
     </div>
   );
 }
