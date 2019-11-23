@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { AC, DN, Coord, cellInClue, figureOutClues } from "./xwd_utils";
+import {
+  AC,
+  DN,
+  UP,
+  DOWN,
+  LEFT,
+  RIGHT,
+  Coord,
+  cellInClue,
+  figureOutClues
+} from "./xwd_utils";
 
 export function FilledCell(props) {
   return (
@@ -27,6 +37,16 @@ export function EmptyCell(props) {
       props.selectNextCell(false);
     } else if (event.key === "Delete") {
       setContents("");
+    } else if (event.key === "Tab") {
+      props.selectNextClue();
+    } else if (event.key === "ArrowUp") {
+      props.moveCell(UP);
+    } else if (event.key === "ArrowDown") {
+      props.moveCell(DOWN);
+    } else if (event.key === "ArrowLeft") {
+      props.moveCell(LEFT);
+    } else if (event.key === "ArrowRight") {
+      props.moveCell(RIGHT);
     }
   };
   let backgroundColor = props.selected
@@ -78,6 +98,7 @@ export function Grid(props) {
   const cellHeight = 30;
   const cellWidth = 30;
 
+  /* Make array of white cells. */
   for (let i = 0; i < props.h; i++) {
     for (let j = 0; j < props.v; j++) {
       let blackCell = false;
@@ -94,26 +115,37 @@ export function Grid(props) {
     }
   }
   const clues = figureOutClues(props.h, props.v, whiteCells);
-  console.log(clues);
   const clueCells = {};
-  for (let [key, value] of Object.entries(clues["acrossClues"])) {
+  for (let [key, value] of Object.entries(clues[AC])) {
     clueCells[key] = new Coord(value.x, value.y);
   }
-  for (let [key, value] of Object.entries(clues["downClues"])) {
+  for (let [key, value] of Object.entries(clues[DN])) {
     clueCells[key] = new Coord(value.x, value.y);
   }
   function doHighlight(justClicked) {
     console.log("just clicked");
     console.log(justClicked);
+    if (justClicked.x >= props.h || justClicked.y >= props.v) {
+      return;
+    }
+    let matched = false;
+    for (const cell of whiteCells) {
+      if (justClicked.equals(cell)) {
+        matched = true;
+      }
+    }
+    if (!matched) {
+      return;
+    }
     const highlightedCells = [];
     let acHighlighted = null;
     let dnHighlighted = null;
-    for (let [key, value] of Object.entries(clues["acrossClues"])) {
+    for (let value of Object.values(clues[AC])) {
       if (cellInClue(value, justClicked)) {
         acHighlighted = value;
       }
     }
-    for (let [key, value] of Object.entries(clues["downClues"])) {
+    for (let value of Object.values(clues[DN])) {
       if (cellInClue(value, justClicked)) {
         dnHighlighted = value;
       }
@@ -183,6 +215,48 @@ export function Grid(props) {
     }
   }
 
+  function moveCell(direction) {
+    if (direction === UP) {
+      doHighlight(selectedCell.nextCell(DN, false));
+    } else if (direction === DOWN) {
+      doHighlight(selectedCell.nextCell(DN, true));
+    } else if (direction === LEFT) {
+      doHighlight(selectedCell.nextCell(AC, false));
+    } else if (direction === RIGHT) {
+      doHighlight(selectedCell.nextCell(AC, true));
+    }
+  }
+
+  function selectNextClue() {
+    console.log("select next clue");
+    console.log(selectedClue.direction);
+    const dirClues = Object.values(clues[selectedClue.direction]);
+    const otherDirection = selectedClue.direction === AC ? DN : AC;
+    const otherDirClues = Object.values(clues[otherDirection]);
+
+    for (let i = 0; i < dirClues.length; i++) {
+      console.log("sel");
+      console.log(selectedClue);
+      console.log("iter");
+      console.log(dirClues[i]);
+      if (selectedClue.equals(dirClues[i])) {
+        let newClue;
+        if (i !== dirClues.length - 1) {
+          console.log("setting 1");
+          newClue = dirClues[i + 1];
+        } else {
+          console.log("setting 2");
+          newClue = otherDirClues[0];
+        }
+        console.log("hello");
+        const coord = new Coord(newClue.x, newClue.y);
+        console.log("about to highlight");
+        doHighlight(coord);
+        break;
+      }
+    }
+  }
+
   console.log(clueCells);
   console.log("highlights");
   console.log(highlightedCells1);
@@ -240,6 +314,8 @@ export function Grid(props) {
               }
               onClick={e => doHighlight(new Coord(i, j))}
               selectNextCell={selectNextCell}
+              selectNextClue={selectNextClue}
+              moveCell={moveCell}
             />
           );
         }

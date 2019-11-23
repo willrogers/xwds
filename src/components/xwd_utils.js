@@ -1,5 +1,9 @@
 export const AC = "ac";
 export const DN = "dn";
+export const UP = "up";
+export const DOWN = "down";
+export const LEFT = "left";
+export const RIGHT = "right";
 
 export class Coord {
   constructor(x, y) {
@@ -8,6 +12,14 @@ export class Coord {
   }
   equals(other) {
     return other !== null && this.x === other.x && this.y === other.y;
+  }
+  nextCell(direction, forwards = true) {
+    const increment = forwards ? 1 : -1;
+    if (direction === AC) {
+      return new Coord(this.x + increment, this.y);
+    } else {
+      return new Coord(this.x, this.y + increment);
+    }
   }
 }
 
@@ -104,7 +116,7 @@ export function figureOutClues(acSquares, dnSquares, whiteSquares) {
     }
   }
   return {
-    acrossClues: acrossClues,
-    downClues: downClues
+    ac: acrossClues,
+    dn: downClues
   };
 }
