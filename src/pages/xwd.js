@@ -10,7 +10,7 @@ const CrosswordPage = () => {
   const [downSize, setDownSize] = useState(0);
   const [clues, setClues] = useState({ ac: [], dn: [] });
   if (blackSquares.length === 0) {
-    fetch("/xwd2018.json")
+    fetch("/xwd2019.json")
       .then(data => {
         console.log(data);
         return data.json();

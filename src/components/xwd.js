@@ -1,105 +1,5 @@
 import React, { useState } from "react";
-
-const AC = "ac";
-const DN = "dn";
-
-var coord = function(x, y) {
-  return { x: x, y: y };
-};
-
-function clueSeq(x, y, length, direction) {
-  return { x: x, y: y, length: length, direction: direction };
-}
-
-function clueEq(clueSeq1, clueSeq2) {
-  return (
-    clueSeq1 !== null &&
-    clueSeq2 !== null &&
-    clueSeq1.x === clueSeq2.x &&
-    clueSeq1.y === clueSeq2.y &&
-    clueSeq1.length === clueSeq2.length &&
-    clueSeq1.direction === clueSeq2.direction
-  );
-}
-
-function cellInArray(array, cell) {
-  for (var k = 0; k < array.length; k++) {
-    const { x, y } = array[k];
-    if (x === cell.x && y === cell.y) {
-      return true;
-    }
-  }
-  return false;
-}
-function cellInClue(clue, cell) {
-  if (clue.direction === AC) {
-    for (var i = clue.x; i < clue.x + clue.length; i++) {
-      if (cell.x === i && cell.y === clue.y) {
-        return true;
-      }
-    }
-  }
-  if (clue.direction === DN) {
-    for (var i = clue.y; i < clue.y + clue.length; i++) {
-      if (cell.x == clue.x && cell.y == i) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
-const figureOutClues = (acSquares, dnSquares, whiteSquares) => {
-  /* Collect clues and write in numbers */
-  var acrossClues = [];
-  var downClues = [];
-  var clueNumber = 1;
-  /* loop from right to left then top to bottom */
-  for (var j = 0; j < dnSquares; j++) {
-    for (var i = 0; i < acSquares; i++) {
-      var cell = coord(i, j);
-      var acrossCount = 0;
-      var downCount = 0;
-      if (cellInArray(whiteSquares, cell)) {
-        /* Start of across clue */
-        if (i === 0 || !cellInArray(whiteSquares, coord(i - 1, j))) {
-          acrossCount = 1;
-          for (var k = i + 1; k < acSquares; k++) {
-            if (cellInArray(whiteSquares, coord(k, j))) {
-              acrossCount += 1;
-            } else {
-              break;
-            }
-          }
-          if (acrossCount > 1) {
-            acrossClues[clueNumber] = clueSeq(i, j, acrossCount, "ac");
-          }
-        }
-        /* Start of down clue */
-        if (j === 0 || !cellInArray(whiteSquares, coord(i, j - 1))) {
-          downCount = 1;
-          for (var l = j + 1; l < dnSquares; l++) {
-            if (cellInArray(whiteSquares, coord(i, l))) {
-              downCount += 1;
-            } else {
-              break;
-            }
-          }
-          if (downCount > 1) {
-            downClues[clueNumber] = clueSeq(i, j, downCount, "dn");
-          }
-        }
-        if (acrossCount > 1 || downCount > 1) {
-          clueNumber += 1;
-        }
-      }
-    }
-  }
-  return {
-    acrossClues: acrossClues,
-    downClues: downClues
-  };
-};
+import { AC, DN, Coord, cellInClue, figureOutClues } from "./xwd_utils";
 
 export function FilledCell(props) {
   return (
@@ -181,7 +81,7 @@ export function Grid(props) {
         }
       }
       if (!blackCell) {
-        whiteCells.push(coord(i, j));
+        whiteCells.push(new Coord(i, j));
       }
       cells.push([i, j, blackCell]);
     }
@@ -190,10 +90,10 @@ export function Grid(props) {
   console.log(clues);
   const clueCells = {};
   for (let [key, value] of Object.entries(clues["acrossClues"])) {
-    clueCells[key] = coord(value.x, value.y);
+    clueCells[key] = new Coord(value.x, value.y);
   }
   for (let [key, value] of Object.entries(clues["downClues"])) {
-    clueCells[key] = coord(value.x, value.y);
+    clueCells[key] = new Coord(value.x, value.y);
   }
   function doHighlight(justClicked) {
     console.log("just clicked");
@@ -214,7 +114,11 @@ export function Grid(props) {
     console.log("highlighted clues:");
     console.log(acHighlighted);
     console.log(dnHighlighted);
-    if (clueEq(selectedClue, acHighlighted) && dnHighlighted !== null) {
+    if (
+      selectedClue &&
+      selectedClue.equals(acHighlighted) &&
+      dnHighlighted !== null
+    ) {
       console.log("if 1");
       setSelectedCell(justClicked);
       setSelectedClue(dnHighlighted);
@@ -222,7 +126,11 @@ export function Grid(props) {
       for (let i = clue.y; i < clue.y + clue.length; i++) {
         highlightedCells.push([clue.x, i]);
       }
-    } else if (clueEq(selectedClue, dnHighlighted) && acHighlighted !== null) {
+    } else if (
+      selectedClue &&
+      selectedClue.equals(dnHighlighted) &&
+      acHighlighted !== null
+    ) {
       console.log("if 2");
       setSelectedCell(justClicked);
       setSelectedClue(acHighlighted);
@@ -254,12 +162,12 @@ export function Grid(props) {
     const { x, y } = selectedCell;
     if (selectedClue.direction === AC) {
       if (x !== selectedClue.x + selectedClue.length - 1) {
-        setSelectedCell(coord(x + 1, y));
+        setSelectedCell(new Coord(x + 1, y));
       }
     }
     if (selectedClue.direction === DN) {
       if (y !== selectedClue.y + selectedClue.length - 1) {
-        setSelectedCell(coord(x, y + 1));
+        setSelectedCell(new Coord(x, y + 1));
       }
     }
   }
@@ -319,7 +227,7 @@ export function Grid(props) {
                 i === selectedCell.x &&
                 j === selectedCell.y
               }
-              onClick={e => doHighlight(coord(i, j))}
+              onClick={e => doHighlight(new Coord(i, j))}
               selectNextCell={selectNextCell}
             />
           );
