@@ -17,10 +17,17 @@ export function FilledCell(props) {
 }
 export function EmptyCell(props) {
   const [contents, setContents] = useState("");
-  const handleKeyPress = event => {
+  const handleKeyUp = event => {
     console.log("pressed " + event.key);
-    setContents(event.key);
-    props.selectNextCell();
+    if (event.key.match(/^[a-z]$/i)) {
+      setContents(event.key);
+      props.selectNextCell();
+    } else if (event.key === "Backspace") {
+      setContents("");
+      props.selectNextCell(false);
+    } else if (event.key === "Delete") {
+      setContents("");
+    }
   };
   let backgroundColor = props.selected
     ? "cyan"
@@ -43,7 +50,7 @@ export function EmptyCell(props) {
         onClick={props.onClick}
         className="white-cell"
         type="text"
-        onKeyPress={handleKeyPress}
+        onKeyUp={handleKeyUp}
         value={contents}
       ></input>
       <div
@@ -158,16 +165,20 @@ export function Grid(props) {
     setHighightedCells1(highlightedCells);
   }
 
-  function selectNextCell() {
+  function selectNextCell(forwards = true) {
     const { x, y } = selectedCell;
     if (selectedClue.direction === AC) {
-      if (x !== selectedClue.x + selectedClue.length - 1) {
+      if (forwards && x !== selectedClue.x + selectedClue.length - 1) {
         setSelectedCell(new Coord(x + 1, y));
+      } else if (!forwards && x !== selectedClue.x) {
+        setSelectedCell(new Coord(x - 1, y));
       }
     }
     if (selectedClue.direction === DN) {
-      if (y !== selectedClue.y + selectedClue.length - 1) {
+      if (forwards && y !== selectedClue.y + selectedClue.length - 1) {
         setSelectedCell(new Coord(x, y + 1));
+      } else if (!forwards && y !== selectedClue.y) {
+        setSelectedCell(new Coord(x, y - 1));
       }
     }
   }
