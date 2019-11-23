@@ -108,8 +108,8 @@ export function FilledCell(props) {
         position: "absolute",
         width: props.h + 1 + "px",
         height: props.v + 1 + "px",
-        top: props.x + "px",
-        left: props.y + "px"
+        top: props.y + "px",
+        left: props.x + "px"
       }}
       className="black-cell"
     ></div>
