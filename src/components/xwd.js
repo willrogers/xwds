@@ -6,9 +6,11 @@ import {
   DOWN,
   LEFT,
   RIGHT,
+  DIRNAME,
   Coord,
   cellInClue,
-  figureOutClues
+  figureOutClues,
+  getWhiteCells
 } from "./xwd_utils";
 
 export function FilledCell(props) {
@@ -89,37 +91,52 @@ export function EmptyCell(props) {
   );
 }
 
+export function Crossword(props) {
+  function crosswordOnClick(dir, num) {
+    console.log(`crossword onClick() ${dir} ${num}`);
+  }
+  const [whiteCells, cells] = getWhiteCells(props.v, props.h, props.blackCells);
+  const clues = figureOutClues(props.h, props.v, whiteCells);
+  return (
+    <>
+      <h1>A crossword</h1>
+      <p>First crossword.</p>
+      <div id="xwd-container">
+        <Grid
+          blackCells={props.blackCells}
+          whiteCells={whiteCells}
+          cells={cells}
+          h={props.h}
+          v={props.h}
+          clues={clues}
+        ></Grid>
+      </div>
+      <ClueBox
+        direction={AC}
+        clues={props.clues[AC]}
+        onClick={crosswordOnClick}
+      />
+      <ClueBox
+        direction={DN}
+        clues={props.clues[DN]}
+        onClick={crosswordOnClick}
+      />
+    </>
+  );
+}
+
 export function Grid(props) {
   const [highlightedCells1, setHighightedCells1] = useState([]);
   const [selectedClue, setSelectedClue] = useState(null);
   const [selectedCell, setSelectedCell] = useState(null);
-  const cells = [];
-  const whiteCells = [];
   const cellHeight = 30;
   const cellWidth = 30;
 
-  /* Make array of white cells. */
-  for (let i = 0; i < props.h; i++) {
-    for (let j = 0; j < props.v; j++) {
-      let blackCell = false;
-      for (var k = 0; k < props.blackCells.length; k++) {
-        const [x, y] = props.blackCells[k];
-        if (x === i && y === j) {
-          blackCell = true;
-        }
-      }
-      if (!blackCell) {
-        whiteCells.push(new Coord(i, j));
-      }
-      cells.push([i, j, blackCell]);
-    }
-  }
-  const clues = figureOutClues(props.h, props.v, whiteCells);
   const clueCells = {};
-  for (let [key, value] of Object.entries(clues[AC])) {
+  for (let [key, value] of Object.entries(props.clues[AC])) {
     clueCells[key] = new Coord(value.x, value.y);
   }
-  for (let [key, value] of Object.entries(clues[DN])) {
+  for (let [key, value] of Object.entries(props.clues[DN])) {
     clueCells[key] = new Coord(value.x, value.y);
   }
   function doHighlight(justClicked) {
@@ -129,7 +146,7 @@ export function Grid(props) {
       return;
     }
     let matched = false;
-    for (const cell of whiteCells) {
+    for (const cell of props.whiteCells) {
       if (justClicked.equals(cell)) {
         matched = true;
       }
@@ -140,12 +157,12 @@ export function Grid(props) {
     const highlightedCells = [];
     let acHighlighted = null;
     let dnHighlighted = null;
-    for (let value of Object.values(clues[AC])) {
+    for (let value of Object.values(props.clues[AC])) {
       if (cellInClue(value, justClicked)) {
         acHighlighted = value;
       }
     }
-    for (let value of Object.values(clues[DN])) {
+    for (let value of Object.values(props.clues[DN])) {
       if (cellInClue(value, justClicked)) {
         dnHighlighted = value;
       }
@@ -230,9 +247,9 @@ export function Grid(props) {
   function selectNextClue() {
     console.log("select next clue");
     console.log(selectedClue.direction);
-    const dirClues = Object.values(clues[selectedClue.direction]);
+    const dirClues = Object.values(props.clues[selectedClue.direction]);
     const otherDirection = selectedClue.direction === AC ? DN : AC;
-    const otherDirClues = Object.values(clues[otherDirection]);
+    const otherDirClues = Object.values(props.clues[otherDirection]);
 
     for (let i = 0; i < dirClues.length; i++) {
       console.log("sel");
@@ -260,15 +277,15 @@ export function Grid(props) {
   console.log(clueCells);
   console.log("highlights");
   console.log(highlightedCells1);
-  for (let k = 0; k < cells.length; k++) {
-    const [x, y] = cells[k];
+  for (let k = 0; k < props.cells.length; k++) {
+    const [x, y] = props.cells[k];
     let number = null;
     for (let [key, value] of Object.entries(clueCells)) {
       if (value.x === x && value.y === y) {
         number = key;
       }
     }
-    cells[k].push(number);
+    props.cells[k].push(number);
     let highlight = false;
     for (let l = 0; l < highlightedCells1.length; l++) {
       const [hx, hy] = highlightedCells1[l];
@@ -276,7 +293,7 @@ export function Grid(props) {
         highlight = true;
       }
     }
-    cells[k].push(highlight);
+    props.cells[k].push(highlight);
   }
   return (
     <div
@@ -286,7 +303,7 @@ export function Grid(props) {
         height: props.v * cellHeight + "px"
       }}
     >
-      {cells.map(([i, j, blackCell, number, highlight]) => {
+      {props.cells.map(([i, j, blackCell, number, highlight]) => {
         if (blackCell) {
           return (
             <FilledCell
@@ -325,13 +342,21 @@ export function Grid(props) {
 }
 
 export function ClueBox(props) {
+  function clueBoxOnClick(number) {
+    props.onClick(number, props.direction);
+  }
   return (
     <div style={{ fontWeight: "bold" }}>
-      {props.direction}
+      {DIRNAME[props.direction]}
       {Object.entries(props.clues).map(entry => {
         const [number, vals] = entry;
         const [words, len, date] = vals;
-        return <Clue number={number} clue={words} len={len} />;
+        function onClick() {
+          clueBoxOnClick(number);
+        }
+        return (
+          <Clue number={number} clue={words} len={len} onClick={onClick} />
+        );
       })}
     </div>
   );
@@ -339,7 +364,7 @@ export function ClueBox(props) {
 
 export function Clue(props) {
   return (
-    <div>
+    <div onClick={props.onClick}>
       {props.number}. {props.clue} ({props.len})
     </div>
   );

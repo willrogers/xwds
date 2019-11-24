@@ -4,6 +4,7 @@ export const UP = "up";
 export const DOWN = "down";
 export const LEFT = "left";
 export const RIGHT = "right";
+export const DIRNAME = { ac: "Across", dn: "Down" };
 
 export class Coord {
   constructor(x, y) {
@@ -67,6 +68,28 @@ export function cellInClue(clue, cell) {
     }
   }
   return false;
+}
+
+export function getWhiteCells(h, v, blackCells) {
+  const cells = [];
+  const whiteCells = [];
+  /* Make array of white cells. */
+  for (let i = 0; i < h; i++) {
+    for (let j = 0; j < v; j++) {
+      let blackCell = false;
+      for (var k = 0; k < blackCells.length; k++) {
+        const [x, y] = blackCells[k];
+        if (x === i && y === j) {
+          blackCell = true;
+        }
+      }
+      if (!blackCell) {
+        whiteCells.push(new Coord(i, j));
+      }
+      cells.push([i, j, blackCell]);
+    }
+  }
+  return [whiteCells, cells];
 }
 
 export function figureOutClues(acSquares, dnSquares, whiteSquares) {

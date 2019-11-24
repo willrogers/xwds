@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import Layout from "../components/layout";
 import SEO from "../components/seo";
-import { Grid, ClueBox } from "../components/xwd";
+import { Crossword } from "../components/xwd";
 
 const CrosswordPage = () => {
   const [blackSquares, setBlackSquares] = useState([]);
@@ -22,18 +22,20 @@ const CrosswordPage = () => {
         setClues(json["clues"]);
       });
   }
-  console.log("clues");
+  console.log("props");
   console.log(clues["ac"]);
+  console.log(blackSquares);
+  console.log(acrossSize);
+  console.log(downSize);
   return (
     <Layout>
       <SEO title="Crosswords" keywords={[`gatsby`, `application`, `react`]} />
-      <h1>A crossword</h1>
-      <p>First crossword.</p>
-      <div id="xwd-container">
-        <Grid blackCells={blackSquares} h={acrossSize} v={downSize}></Grid>
-      </div>
-      <ClueBox direction={"Across"} clues={clues["ac"]} />
-      <ClueBox direction={"Down"} clues={clues["dn"]} />
+      <Crossword
+        blackCells={blackSquares}
+        h={acrossSize}
+        v={downSize}
+        clues={clues}
+      />
     </Layout>
   );
 };
