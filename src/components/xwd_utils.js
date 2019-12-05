@@ -115,7 +115,7 @@ export function figureOutClues(acSquares, dnSquares, whiteSquares) {
             }
           }
           if (acrossCount > 1) {
-            acrossClues[clueNumber] = new ClueSeq(i, j, acrossCount, "ac");
+            acrossClues[clueNumber] = new ClueSeq(i, j, acrossCount, AC);
           }
         }
         /* Start of down clue */
@@ -129,7 +129,7 @@ export function figureOutClues(acSquares, dnSquares, whiteSquares) {
             }
           }
           if (downCount > 1) {
-            downClues[clueNumber] = new ClueSeq(i, j, downCount, "dn");
+            downClues[clueNumber] = new ClueSeq(i, j, downCount, AC);
           }
         }
         if (acrossCount > 1 || downCount > 1) {

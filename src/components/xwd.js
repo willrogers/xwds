@@ -92,11 +92,13 @@ export function EmptyCell(props) {
 }
 
 export function Crossword(props) {
-  function crosswordOnClick(dir, num) {
-    console.log(`crossword onClick() ${dir} ${num}`);
-  }
+  const [selectedClue, setSelectedClue] = useState(null);
   const [whiteCells, cells] = getWhiteCells(props.v, props.h, props.blackCells);
   const clues = figureOutClues(props.h, props.v, whiteCells);
+  function crosswordOnClick(num, dir) {
+    console.log(`crossword onClick() ${dir} ${num}`);
+    setSelectedClue(clues[dir][num]);
+  }
   return (
     <>
       <h1>A crossword</h1>
@@ -109,6 +111,8 @@ export function Crossword(props) {
           h={props.h}
           v={props.h}
           clues={clues}
+          selectedClue={selectedClue}
+          setSelectedClue={setSelectedClue}
         ></Grid>
       </div>
       <ClueBox
@@ -127,7 +131,6 @@ export function Crossword(props) {
 
 export function Grid(props) {
   const [highlightedCells1, setHighightedCells1] = useState([]);
-  const [selectedClue, setSelectedClue] = useState(null);
   const [selectedCell, setSelectedCell] = useState(null);
   const cellHeight = 30;
   const cellWidth = 30;
@@ -171,25 +174,25 @@ export function Grid(props) {
     console.log(acHighlighted);
     console.log(dnHighlighted);
     if (
-      selectedClue &&
-      selectedClue.equals(acHighlighted) &&
+      props.selectedClue &&
+      props.selectedClue.equals(acHighlighted) &&
       dnHighlighted !== null
     ) {
       console.log("if 1");
       setSelectedCell(justClicked);
-      setSelectedClue(dnHighlighted);
+      props.setSelectedClue(dnHighlighted);
       const clue = dnHighlighted;
       for (let i = clue.y; i < clue.y + clue.length; i++) {
         highlightedCells.push([clue.x, i]);
       }
     } else if (
-      selectedClue &&
-      selectedClue.equals(dnHighlighted) &&
+      props.selectedClue &&
+      props.selectedClue.equals(dnHighlighted) &&
       acHighlighted !== null
     ) {
       console.log("if 2");
       setSelectedCell(justClicked);
-      setSelectedClue(acHighlighted);
+      props.setSelectedClue(acHighlighted);
       const clue = acHighlighted;
       for (let i = clue.x; i < clue.x + clue.length; i++) {
         highlightedCells.push([i, clue.y]);
@@ -197,7 +200,7 @@ export function Grid(props) {
     } else if (acHighlighted !== null) {
       console.log("hi ac");
       setSelectedCell(justClicked);
-      setSelectedClue(acHighlighted);
+      props.setSelectedClue(acHighlighted);
       const clue = acHighlighted;
       for (let i = clue.x; i < clue.x + clue.length; i++) {
         highlightedCells.push([i, clue.y]);
@@ -205,7 +208,7 @@ export function Grid(props) {
     } else if (dnHighlighted !== null) {
       console.log("hi dn");
       setSelectedCell(justClicked);
-      setSelectedClue(dnHighlighted);
+      props.setSelectedClue(dnHighlighted);
       const clue = dnHighlighted;
       for (let i = clue.y; i < clue.y + clue.length; i++) {
         highlightedCells.push([clue.x, i]);
@@ -216,17 +219,23 @@ export function Grid(props) {
 
   function selectNextCell(forwards = true) {
     const { x, y } = selectedCell;
-    if (selectedClue.direction === AC) {
-      if (forwards && x !== selectedClue.x + selectedClue.length - 1) {
+    if (props.selectedClue.direction === AC) {
+      if (
+        forwards &&
+        x !== props.selectedClue.x + props.selectedClue.length - 1
+      ) {
         setSelectedCell(new Coord(x + 1, y));
-      } else if (!forwards && x !== selectedClue.x) {
+      } else if (!forwards && x !== props.selectedClue.x) {
         setSelectedCell(new Coord(x - 1, y));
       }
     }
-    if (selectedClue.direction === DN) {
-      if (forwards && y !== selectedClue.y + selectedClue.length - 1) {
+    if (props.selectedClue.direction === DN) {
+      if (
+        forwards &&
+        y !== props.selectedClue.y + props.selectedClue.length - 1
+      ) {
         setSelectedCell(new Coord(x, y + 1));
-      } else if (!forwards && y !== selectedClue.y) {
+      } else if (!forwards && y !== props.selectedClue.y) {
         setSelectedCell(new Coord(x, y - 1));
       }
     }
@@ -246,17 +255,17 @@ export function Grid(props) {
 
   function selectNextClue() {
     console.log("select next clue");
-    console.log(selectedClue.direction);
-    const dirClues = Object.values(props.clues[selectedClue.direction]);
-    const otherDirection = selectedClue.direction === AC ? DN : AC;
+    console.log(props.selectedClue.direction);
+    const dirClues = Object.values(props.clues[props.selectedClue.direction]);
+    const otherDirection = props.selectedClue.direction === AC ? DN : AC;
     const otherDirClues = Object.values(props.clues[otherDirection]);
 
     for (let i = 0; i < dirClues.length; i++) {
       console.log("sel");
-      console.log(selectedClue);
+      console.log(props.selectedClue);
       console.log("iter");
       console.log(dirClues[i]);
-      if (selectedClue.equals(dirClues[i])) {
+      if (props.selectedClue.equals(dirClues[i])) {
         let newClue;
         if (i !== dirClues.length - 1) {
           console.log("setting 1");
