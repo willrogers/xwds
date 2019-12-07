@@ -129,7 +129,7 @@ export function figureOutClues(acSquares, dnSquares, whiteSquares) {
             }
           }
           if (downCount > 1) {
-            downClues[clueNumber] = new ClueSeq(i, j, downCount, AC);
+            downClues[clueNumber] = new ClueSeq(i, j, downCount, DN);
           }
         }
         if (acrossCount > 1 || downCount > 1) {
