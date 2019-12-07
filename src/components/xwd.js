@@ -155,7 +155,7 @@ export function Grid(props) {
   for (let [key, value] of Object.entries(props.clues[DN])) {
     clueCells[key] = new Coord(value.x, value.y);
   }
-  function doHighlight(justClicked, direction) {
+  function doHighlight(justClicked) {
     console.log("just clicked");
     console.log(justClicked);
     if (
@@ -186,7 +186,7 @@ export function Grid(props) {
       if (cellInClue(value, justClicked)) {
         acHighlighted = value;
         // If this clue is the highlighted one already carry on.
-        if (!props.selectedClue.equals(acHighlighted)) {
+        if (props.selectedClue && !props.selectedClue.equals(acHighlighted)) {
           props.setSelectedClue(acHighlighted);
           return;
         } else {
@@ -287,7 +287,6 @@ export function Grid(props) {
   }
 
   function selectNextClue() {
-    /*
     console.log("select next clue");
     console.log(props.selectedClue.direction);
     const dirClues = Object.values(props.clues[props.selectedClue.direction]);
@@ -310,15 +309,11 @@ export function Grid(props) {
           newClue = otherDirClues[0];
         }
         props.setSelectedClue(newClue);
-        console.log("newClue");
-        console.log(newClue);
         const coord = new Coord(newClue.x, newClue.y);
-        console.log("about to highlight");
-        doHighlight(coord, newClue.direction);
+        props.setSelectedCell(coord);
         break;
       }
     }
-  */
   }
 
   let highlightedCells = [];
