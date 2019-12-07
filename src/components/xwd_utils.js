@@ -78,8 +78,8 @@ export function getWhiteCells(h, v, blackCells) {
     for (let j = 0; j < v; j++) {
       let blackCell = false;
       for (var k = 0; k < blackCells.length; k++) {
-        const [x, y] = blackCells[k];
-        if (x === i && y === j) {
+        const bCell = blackCells[k];
+        if (bCell.x === i && bCell.y === j) {
           blackCell = true;
         }
       }

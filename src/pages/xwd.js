@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 import { Crossword } from "../components/xwd";
+import { Coord } from "../components/xwd_utils";
 
 const CrosswordPage = () => {
   const [blackSquares, setBlackSquares] = useState([]);
@@ -27,11 +28,12 @@ const CrosswordPage = () => {
   console.log(blackSquares);
   console.log(acrossSize);
   console.log(downSize);
+  const blackCells = blackSquares.map(([x, y]) => new Coord(x, y));
   return (
     <Layout>
       <SEO title="Crosswords" keywords={[`gatsby`, `application`, `react`]} />
       <Crossword
-        blackCells={blackSquares}
+        blackCells={blackCells}
         h={acrossSize}
         v={downSize}
         clues={clues}

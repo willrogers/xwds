@@ -138,6 +138,16 @@ export function Grid(props) {
   const cellHeight = 30;
   const cellWidth = 30;
 
+  function cellIsBlack(cell) {
+    for (let i = 0; i < props.blackCells.length; i++) {
+      const blackCell = props.blackCells[i];
+      if (cell.x === blackCell.x && cell.y === blackCell.y) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   const clueCells = {};
   for (let [key, value] of Object.entries(props.clues[AC])) {
     clueCells[key] = new Coord(value.x, value.y);
@@ -146,12 +156,20 @@ export function Grid(props) {
     clueCells[key] = new Coord(value.x, value.y);
   }
   function doHighlight(justClicked, direction) {
-    props.setSelectedCell(justClicked);
     console.log("just clicked");
     console.log(justClicked);
-    if (justClicked.x >= props.h || justClicked.y >= props.v) {
+    if (
+      justClicked.x < 0 ||
+      justClicked.x >= props.h ||
+      justClicked.y < 0 ||
+      justClicked.y >= props.v
+    ) {
       return;
     }
+    if (cellIsBlack(justClicked)) {
+      return;
+    }
+    props.setSelectedCell(justClicked);
     let matched = false;
     for (const cell of props.whiteCells) {
       if (justClicked.equals(cell)) {
@@ -256,7 +274,6 @@ export function Grid(props) {
   }
 
   function moveCell(direction) {
-    /*
     if (direction === UP) {
       doHighlight(props.selectedCell.nextCell(DN, false));
     } else if (direction === DOWN) {
@@ -266,7 +283,6 @@ export function Grid(props) {
     } else if (direction === RIGHT) {
       doHighlight(props.selectedCell.nextCell(AC, true));
     }
-  */
   }
 
   function selectNextClue() {
