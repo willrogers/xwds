@@ -185,18 +185,19 @@ export function Grid(props) {
     for (let value of Object.values(props.clues[AC])) {
       if (cellInClue(value, justClicked)) {
         acHighlighted = value;
-        props.setSelectedClue(acHighlighted);
-        console.log("selected clue");
-        console.log(acHighlighted);
-        return;
+        // If this clue is the highlighted one already carry on.
+        if (!props.selectedClue.equals(acHighlighted)) {
+          props.setSelectedClue(acHighlighted);
+          return;
+        } else {
+          break;
+        }
       }
     }
     for (let value of Object.values(props.clues[DN])) {
       if (cellInClue(value, justClicked)) {
         dnHighlighted = value;
         props.setSelectedClue(dnHighlighted);
-        console.log("selected clue");
-        console.log(dnHighlighted);
         return;
       }
     }
