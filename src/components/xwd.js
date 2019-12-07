@@ -98,7 +98,9 @@ export function Crossword(props) {
   const clues = figureOutClues(props.h, props.v, whiteCells);
   function crosswordOnClick(num, dir) {
     console.log(`crossword onClick() ${dir} ${num}`);
-    setSelectedClue(clues[dir][num]);
+    const clickedClue = clues[dir][num];
+    setSelectedClue(clickedClue);
+    setSelectedCell(new Coord(clickedClue.x, clickedClue.y));
   }
   return (
     <>
@@ -230,7 +232,6 @@ export function Grid(props) {
   }
 
   function selectNextCell(forwards = true) {
-    /*
     const { x, y } = props.selectedCell;
     if (props.selectedClue.direction === AC) {
       if (
@@ -252,7 +253,6 @@ export function Grid(props) {
         props.setSelectedCell(new Coord(x, y - 1));
       }
     }
-  */
   }
 
   function moveCell(direction) {
