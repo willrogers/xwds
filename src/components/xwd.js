@@ -243,53 +243,6 @@ export function Grid(props) {
         return;
       }
     }
-    /*
-    console.log("highlighted clues:");
-    console.log(acHighlighted);
-    console.log(dnHighlighted);
-    if (
-      props.selectedClue &&
-      props.selectedClue.equals(acHighlighted) &&
-      dnHighlighted !== null
-    ) {
-      console.log("if 1");
-      props.setSelectedCell(justClicked);
-      props.setSelectedClue(dnHighlighted);
-      const clue = dnHighlighted;
-      for (let i = clue.y; i < clue.y + clue.length; i++) {
-        highlighted.push([clue.x, i]);
-      }
-    } else if (
-      props.selectedClue &&
-      props.selectedClue.equals(dnHighlighted) &&
-      acHighlighted !== null
-    ) {
-      console.log("if 2");
-      props.setSelectedCell(justClicked);
-      props.setSelectedClue(acHighlighted);
-      const clue = acHighlighted;
-      for (let i = clue.x; i < clue.x + clue.length; i++) {
-        highlighted.push([i, clue.y]);
-      }
-    } else if (acHighlighted !== null) {
-      console.log("hi ac");
-      props.setSelectedCell(justClicked);
-      props.setSelectedClue(acHighlighted);
-      const clue = acHighlighted;
-      for (let i = clue.x; i < clue.x + clue.length; i++) {
-        highlighted.push([i, clue.y]);
-      }
-    } else if (dnHighlighted !== null) {
-      console.log("hi dn");
-      props.setSelectedCell(justClicked);
-      props.setSelectedClue(dnHighlighted);
-      const clue = dnHighlighted;
-      for (let i = clue.y; i < clue.y + clue.length; i++) {
-        highlighted.push([clue.x, i]);
-      }
-    }
-    props.setHighlightedCells(highlighted);
-  */
   }
 
   function selectNextCell(forwards = true) {
