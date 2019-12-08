@@ -10,7 +10,8 @@ import {
   Coord,
   cellInClue,
   figureOutClues,
-  getWhiteCells
+  getWhiteCells,
+  ClueDetails
 } from "./xwd_utils";
 
 export function FilledCell(props) {
@@ -91,21 +92,56 @@ export function EmptyCell(props) {
   );
 }
 
+export function CurrentClue(props) {
+  let text = "No clue selected.";
+  if (props.clue !== null) {
+    const { num, direction, clue } = props.clue;
+    text = `${num} ${direction}. ${clue}`;
+  }
+  return <>{text}</>;
+}
+
 export function Crossword(props) {
+  // a ClueSeq
+  const [selectedClueSeq, setSelectedClueSeq] = useState(null);
+  // a ClueDetails
   const [selectedClue, setSelectedClue] = useState(null);
+  // a Coord
   const [selectedCell, setSelectedCell] = useState(null);
+  console.log("selected clue then clueSeq");
+  console.log(selectedClue);
+  console.log(selectedClueSeq);
   const [whiteCells, cells] = getWhiteCells(props.v, props.h, props.blackCells);
+  // different to props.clues
   const clues = figureOutClues(props.h, props.v, whiteCells);
+  if (selectedClueSeq != null) {
+    for (const [num, clueSeq] of Object.entries(
+      clues[selectedClueSeq.direction]
+    )) {
+      const [clue, letters, date] = props.clues[clueSeq.direction][num];
+      const clueDets = new ClueDetails(
+        num,
+        clueSeq.direction,
+        clue,
+        letters,
+        date
+      );
+      if (clueSeq.equals(selectedClueSeq) && !clueDets.equals(selectedClue)) {
+        setSelectedClue(clueDets);
+      }
+    }
+  }
   function crosswordOnClick(num, dir) {
     console.log(`crossword onClick() ${dir} ${num}`);
     const clickedClue = clues[dir][num];
-    setSelectedClue(clickedClue);
+    setSelectedClueSeq(clickedClue);
     setSelectedCell(new Coord(clickedClue.x, clickedClue.y));
   }
   return (
     <>
       <h1>A crossword</h1>
       <p>First crossword.</p>
+      <CurrentClue clue={selectedClue}></CurrentClue>
       <div id="xwd-container">
         <Grid
           blackCells={props.blackCells}
@@ -114,8 +150,8 @@ export function Crossword(props) {
           h={props.h}
           v={props.h}
           clues={clues}
-          selectedClue={selectedClue}
-          setSelectedClue={setSelectedClue}
+          selectedClue={selectedClueSeq}
+          setSelectedClue={setSelectedClueSeq}
           selectedCell={selectedCell}
           setSelectedCell={setSelectedCell}
         ></Grid>
@@ -124,11 +160,13 @@ export function Crossword(props) {
         direction={AC}
         clues={props.clues[AC]}
         onClick={crosswordOnClick}
+        selectedClue={selectedClue}
       />
       <ClueBox
         direction={DN}
         clues={props.clues[DN]}
         onClick={crosswordOnClick}
+        selectedClue={selectedClue}
       />
     </>
   );
@@ -187,6 +225,8 @@ export function Grid(props) {
         acHighlighted = value;
         // If this clue is the highlighted one already carry on.
         if (props.selectedClue && !props.selectedClue.equals(acHighlighted)) {
+          console.log("setiting selected clue to");
+          console.log(acHighlighted);
           props.setSelectedClue(acHighlighted);
           return;
         } else {
@@ -197,6 +237,8 @@ export function Grid(props) {
     for (let value of Object.values(props.clues[DN])) {
       if (cellInClue(value, justClicked)) {
         dnHighlighted = value;
+        console.log("setiting selected clue to");
+        console.log(dnHighlighted);
         props.setSelectedClue(dnHighlighted);
         return;
       }
@@ -405,17 +447,30 @@ export function ClueBox(props) {
   function clueBoxOnClick(number) {
     props.onClick(number, props.direction);
   }
+  let num = null;
+  let direction = null;
+  if (props.selectedClue !== null) {
+    num = props.selectedClue.num;
+    direction = props.selectedClue.direction;
+  }
   return (
     <div style={{ fontWeight: "bold" }}>
       {DIRNAME[props.direction]}
       {Object.entries(props.clues).map(entry => {
         const [number, vals] = entry;
+        const selected = props.direction === direction && number === num;
         const [words, len] = vals;
         function onClick() {
           clueBoxOnClick(number);
         }
         return (
-          <Clue number={number} clue={words} len={len} onClick={onClick} />
+          <Clue
+            number={number}
+            clue={words}
+            len={len}
+            onClick={onClick}
+            selected={selected}
+          />
         );
       })}
     </div>
@@ -423,8 +478,12 @@ export function ClueBox(props) {
 }
 
 export function Clue(props) {
+  let classNames = "clue";
+  if (props.selected) {
+    classNames = `${classNames} selected`;
+  }
   return (
-    <div onClick={props.onClick}>
+    <div className={classNames} onClick={props.onClick}>
       {props.number}. {props.clue} ({props.len})
     </div>
   );

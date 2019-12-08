@@ -41,3 +41,11 @@
   font-size: 11px;
   pointer-events: none;
 }
+
+.clue {
+  cursor: default;
+}
+
+.selected {
+  background-color: lightblue;
+}

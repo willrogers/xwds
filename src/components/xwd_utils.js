@@ -42,6 +42,23 @@ export class ClueSeq {
   }
 }
 
+export class ClueDetails {
+  constructor(num, direction, clue, letters, releaseDate) {
+    this.num = num;
+    this.direction = direction;
+    this.clue = clue;
+    this.letters = letters;
+    this.releaseDate = releaseDate;
+  }
+  equals(other) {
+    return (
+      other !== null &&
+      this.num === other.num &&
+      this.direction === other.direction
+    );
+  }
+}
+
 export function cellInArray(array, cell) {
   for (var k = 0; k < array.length; k++) {
     const { x, y } = array[k];
