@@ -11,7 +11,7 @@ import {
   cellInClue,
   figureOutClues,
   getWhiteCells,
-  ClueDetails
+  ClueDetails,
 } from "./xwd_utils";
 
 export function FilledCell(props) {
@@ -22,7 +22,7 @@ export function FilledCell(props) {
         width: props.h + 1 + "px",
         height: props.v + 1 + "px",
         top: props.y + "px",
-        left: props.x + "px"
+        left: props.x + "px",
       }}
       className="black-cell"
     ></div>
@@ -30,7 +30,7 @@ export function FilledCell(props) {
 }
 export function EmptyCell(props) {
   const [contents, setContents] = useState("");
-  const handleKeyUp = event => {
+  const handleKeyUp = (event) => {
     console.log("pressed " + event.key);
     if (event.key.match(/^[a-z]$/i)) {
       setContents(event.key);
@@ -67,9 +67,9 @@ export function EmptyCell(props) {
           height: props.v - 1 + "px",
           top: props.y + "px",
           left: props.x + "px",
-          backgroundColor: backgroundColor
+          backgroundColor: backgroundColor,
         }}
-        ref={input => input && props.selected && input.focus()}
+        ref={(input) => input && props.selected && input.focus()}
         onClick={props.onClick}
         className="white-cell"
         type="text"
@@ -83,7 +83,7 @@ export function EmptyCell(props) {
           width: props.h - 1 + "px",
           height: props.v - 1 + "px",
           top: props.y + "px",
-          left: props.x + 2 + "px"
+          left: props.x + 2 + "px",
         }}
       >
         {props.number}
@@ -355,7 +355,7 @@ export function Grid(props) {
       style={{
         position: "relative",
         width: props.h * cellWidth + "px",
-        height: props.v * cellHeight + "px"
+        height: props.v * cellHeight + "px",
       }}
     >
       {props.cells.map(([i, j, blackCell, number, highlight]) => {
@@ -384,7 +384,7 @@ export function Grid(props) {
                 i === props.selectedCell.x &&
                 j === props.selectedCell.y
               }
-              onClick={e => doHighlight(new Coord(i, j))}
+              onClick={(e) => doHighlight(new Coord(i, j))}
               selectNextCell={selectNextCell}
               selectNextClue={selectNextClue}
               moveCell={moveCell}
@@ -409,7 +409,7 @@ export function ClueBox(props) {
   return (
     <div style={{ fontWeight: "bold" }}>
       {DIRNAME[props.direction]}
-      {Object.entries(props.clues).map(entry => {
+      {Object.entries(props.clues).map((entry) => {
         const [number, vals] = entry;
         const selected = props.direction === direction && number === num;
         const [words, len] = vals;

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import fetch from "cross-fetch";
 
 import Layout from "../components/layout";
 import SEO from "../components/seo";
@@ -12,11 +13,11 @@ const CrosswordPage = () => {
   const [clues, setClues] = useState({ ac: [], dn: [] });
   if (blackSquares.length === 0) {
     fetch("/xwd2019.json")
-      .then(data => {
+      .then((data) => {
         console.log(data);
         return data.json();
       })
-      .then(json => {
+      .then((json) => {
         setBlackSquares(json["black-squares"]);
         setAcrossSize(json["across-size"]);
         setDownSize(json["down-size"]);
