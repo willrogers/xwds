@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import fetch from "cross-fetch";
+import React from "react";
+import { useStaticQuery } from "gatsby";
 
 import Layout from "../components/layout";
 import SEO from "../components/seo";
@@ -7,23 +7,47 @@ import { Crossword } from "../components/xwd";
 import { Coord } from "../components/xwd_utils";
 
 const CrosswordPage = () => {
-  const [blackSquares, setBlackSquares] = useState([]);
-  const [acrossSize, setAcrossSize] = useState(0);
-  const [downSize, setDownSize] = useState(0);
-  const [clues, setClues] = useState({ ac: [], dn: [] });
-  if (blackSquares.length === 0) {
-    fetch("/xwd2020.json")
-      .then((data) => {
-        console.log(data);
-        return data.json();
-      })
-      .then((json) => {
-        setBlackSquares(json["black-squares"]);
-        setAcrossSize(json["across-size"]);
-        setDownSize(json["down-size"]);
-        setClues(json["clues"]);
-      });
-  }
+  const data = useStaticQuery(graphql`
+    query XwdQuery {
+      allXwd2020Json {
+        edges {
+          node {
+            across_size
+            down_size
+            black_squares
+            clues {
+              ac {
+                number
+                clue
+                length
+                date
+              }
+              dn {
+                number
+                clue
+                length
+                date
+              }
+            }
+          }
+        }
+      }
+    }
+  `);
+  const xwdData = data.allXwd2019Json.edges[0].node;
+  const acrossSize = xwdData.across_size;
+  const downSize = xwdData.down_size;
+  const blackSquares = xwdData.black_squares;
+  const rawClues = xwdData.clues;
+  const clues = { ac: {}, dn: {} };
+  rawClues.ac.forEach((element) => {
+    clues.ac[element.number] = [element.clue, element.length, element.date];
+  });
+  rawClues.dn.forEach((element) => {
+    clues.dn[element.number] = [element.clue, element.length, element.date];
+  });
+
+  console.log(data);
   console.log("props");
   console.log(clues["ac"]);
   console.log(blackSquares);

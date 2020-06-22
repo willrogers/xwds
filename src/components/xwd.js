@@ -13,6 +13,7 @@ import {
   getWhiteCells,
   ClueDetails,
 } from "./xwd_utils";
+import { useStaticQuery } from "gatsby";
 
 export function FilledCell(props) {
   return (
@@ -102,6 +103,21 @@ export function CurrentClue(props) {
 }
 
 export function Crossword(props) {
+  /*
+  const data = useStaticQuery(graphql`
+    query XwdQuery {
+      allXwdxJson {
+        edges {
+          node {
+            across_size
+            down_size
+          }
+        }
+      }
+    }
+  `);
+  console.log(data);
+  */
   // a ClueSeq
   const [selectedClueSeq, setSelectedClueSeq] = useState(null);
   // a ClueDetails
