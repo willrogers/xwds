@@ -1,5 +1,5 @@
 import React from "react";
-import { useStaticQuery } from "gatsby";
+import { graphql, useStaticQuery } from "gatsby";
 
 import Layout from "../components/layout";
 import SEO from "../components/seo";
@@ -12,6 +12,8 @@ const CrosswordPage = () => {
       allXwd2020Json {
         edges {
           node {
+            title
+            preamble
             across_size
             down_size
             black_squares
@@ -35,6 +37,8 @@ const CrosswordPage = () => {
     }
   `);
   const xwdData = data.allXwd2019Json.edges[0].node;
+  const title = xwdData.title;
+  const preamble = xwdData.preamble;
   const acrossSize = xwdData.across_size;
   const downSize = xwdData.down_size;
   const blackSquares = xwdData.black_squares;
@@ -47,17 +51,13 @@ const CrosswordPage = () => {
     clues.dn[element.number] = [element.clue, element.length, element.date];
   });
 
-  console.log(data);
-  console.log("props");
-  console.log(clues["ac"]);
-  console.log(blackSquares);
-  console.log(acrossSize);
-  console.log(downSize);
   const blackCells = blackSquares.map(([x, y]) => new Coord(x, y));
   return (
     <Layout>
       <SEO title="Crosswords" keywords={[`gatsby`, `application`, `react`]} />
       <Crossword
+        title={title}
+        preamble={preamble}
         blackCells={blackCells}
         h={acrossSize}
         v={downSize}

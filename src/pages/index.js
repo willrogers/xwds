@@ -10,7 +10,12 @@ const IndexPage = () => (
     <SEO title="Crosswords" keywords={[`gatsby`, `application`, `react`]} />
     <h1>Crosswords</h1>
     <ul>
-      <li><Link to="/xwd/">The Advent Crossword 2020</Link></li>
+      <li>
+        <Link to="/basics/">Some help for new starters</Link>
+      </li>
+      <li>
+        <Link to="/xwd/">The 2020 Advent Crossword</Link>
+      </li>
     </ul>
   </Layout>
 );

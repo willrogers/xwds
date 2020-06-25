@@ -13,7 +13,6 @@ import {
   getWhiteCells,
   ClueDetails,
 } from "./xwd_utils";
-import { useStaticQuery } from "gatsby";
 
 export function FilledCell(props) {
   return (
@@ -96,28 +95,26 @@ export function EmptyCell(props) {
 export function CurrentClue(props) {
   let text = "No clue selected.";
   if (props.clue !== null) {
-    const { num, direction, clue } = props.clue;
-    text = `${num} ${direction}. ${clue}`;
+    const { num, direction, clue, letters } = props.clue;
+    text = `${num} ${direction}. ${clue} (${letters})`;
   }
-  return <>{text}</>;
+  return (
+    <div style={{ padding: "15px" }}>
+      <span
+        style={{
+          fontWeight: "bold",
+          padding: "5px",
+          margin: "5px",
+          backgroundColor: "lightblue",
+        }}
+      >
+        {text}
+      </span>
+    </div>
+  );
 }
 
 export function Crossword(props) {
-  /*
-  const data = useStaticQuery(graphql`
-    query XwdQuery {
-      allXwdxJson {
-        edges {
-          node {
-            across_size
-            down_size
-          }
-        }
-      }
-    }
-  `);
-  console.log(data);
-  */
   // a ClueSeq
   const [selectedClueSeq, setSelectedClueSeq] = useState(null);
   // a ClueDetails
@@ -155,10 +152,10 @@ export function Crossword(props) {
   }
   return (
     <>
-      <h1>A crossword</h1>
-      <p>First crossword.</p>
+      <h1>{props.title}</h1>
+      <p>{props.preamble}</p>
       <CurrentClue clue={selectedClue}></CurrentClue>
-      <div id="xwd-container">
+      <div style={{ margin: "5px" }} id="xwd-container">
         <Grid
           blackCells={props.blackCells}
           whiteCells={whiteCells}
@@ -423,8 +420,18 @@ export function ClueBox(props) {
     direction = props.selectedClue.direction;
   }
   return (
-    <div style={{ fontWeight: "bold" }}>
-      {DIRNAME[props.direction]}
+    <div
+      style={{
+        fontWeight: "bold",
+        width: "300px",
+        display: "inline-block",
+        verticalAlign: "top",
+        margin: "5px",
+      }}
+    >
+      <div style={{ border: "1px solid black", padding: "5px" }}>
+        {DIRNAME[props.direction]}
+      </div>
       {Object.entries(props.clues).map((entry) => {
         const [number, vals] = entry;
         const selected = props.direction === direction && number === num;
