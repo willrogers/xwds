@@ -6,7 +6,7 @@ import SEO from "../components/seo";
 import { Crossword } from "../components/xwd";
 import { Coord } from "../components/xwd_utils";
 
-const CrosswordPage = () => {
+const CrosswordPage = (): JSX.Element => {
   const data = useStaticQuery(graphql`
     query XwdQuery {
       allXwd2020Json {
