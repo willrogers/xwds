@@ -9,9 +9,9 @@ const IndexPage = () => (
   <Layout>
     <SEO title="Crosswords" keywords={[`gatsby`, `application`, `react`]} />
     <h1>Crosswords</h1>
-    <p>Some crossword notes and my own crosswords.</p>
-    <Link to="/basics/">Some help for new starters</Link>
-    <Link to="/xwd/">A crossword</Link>
+    <ul>
+    <li><Link to="/xwd/">The Advent Crossword 2020</Link></li>
+    </ul>
   </Layout>
 )
 
