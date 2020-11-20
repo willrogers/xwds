@@ -36,7 +36,7 @@ const CrosswordPage = (): JSX.Element => {
       }
     }
   `);
-  const xwdData = data.allXwd2019Json.edges[0].node;
+  const xwdData = data.allXwd2020Json.edges[0].node;
   const title = xwdData.title;
   const preamble = xwdData.preamble;
   const acrossSize = xwdData.across_size;
