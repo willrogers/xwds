@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[5],{RXBc:function(e,t,n){"use strict";n.r(t);var a=n("q1tI"),l=n.n(a),r=n("Wbzz"),o=n("Bl7J"),s=n("vrFN");t.default=function(){return l.a.createElement(o.a,null,l.a.createElement(s.a,{title:"Crosswords",keywords:["gatsby","application","react"]}),l.a.createElement("h1",null,"Crosswords"),l.a.createElement("ul",null,l.a.createElement("li",null,l.a.createElement(r.Link,{to:"/xwd/"},"The Advent Crossword 2020"))))}}}]);
-//# sourceMappingURL=component---src-pages-index-js-32c8e94c3fa68a6ce8d0.js.map
