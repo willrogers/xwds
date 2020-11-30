@@ -95,8 +95,13 @@ export function EmptyCell(props) {
 export function CurrentClue(props) {
   let text = "No clue selected.";
   if (props.clue !== null) {
-    const { num, direction, clue, letters } = props.clue;
-    text = `${num} ${direction}. ${clue} (${letters})`;
+    const { num, direction, clue, letters, releaseDate } = props.clue;
+    const now = new Date();
+    const words =
+      now.getMonth() === 11 && now.getDate() > releaseDate
+        ? clue
+        : `Released on December ${releaseDate}.`;
+    text = `${num} ${direction}. ${words} (${letters})`;
   }
   return (
     <div style={{ padding: "15px" }}>
@@ -121,9 +126,6 @@ export function Crossword(props) {
   const [selectedClue, setSelectedClue] = useState(null);
   // a Coord
   const [selectedCell, setSelectedCell] = useState(null);
-  console.log("selected clue then clueSeq");
-  console.log(selectedClue);
-  console.log(selectedClueSeq);
   const [whiteCells, cells] = getWhiteCells(props.v, props.h, props.blackCells);
   // different to props.clues
   const clues = figureOutClues(props.h, props.v, whiteCells);
@@ -435,14 +437,20 @@ export function ClueBox(props) {
       {Object.entries(props.clues).map((entry) => {
         const [number, vals] = entry;
         const selected = props.direction === direction && number === num;
-        const [words, len] = vals;
+        const [clueText, len, releaseDate] = vals;
+
+        const now = new Date();
+        const text =
+          now.getMonth() === 11 && now.getDate() > releaseDate
+            ? clueText
+            : `Released on December ${releaseDate}.`;
         function onClick() {
           clueBoxOnClick(number);
         }
         return (
           <Clue
             number={number}
-            clue={words}
+            clue={text}
             len={len}
             onClick={onClick}
             selected={selected}
