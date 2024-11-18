@@ -8,8 +8,8 @@ import { Coord } from "../components/xwd_utils";
 
 const CrosswordPage = (): JSX.Element => {
   const data = useStaticQuery(graphql`
-    query XwdQuery {
-      allXwd2020Json {
+    query {
+      allXwd2024Json {
         edges {
           node {
             title
@@ -36,7 +36,7 @@ const CrosswordPage = (): JSX.Element => {
       }
     }
   `);
-  const xwdData = data.allXwd2020Json.edges[0].node;
+  const xwdData = data.allXwd2024Json.edges[0].node;
   const title = xwdData.title;
   const preamble = xwdData.preamble;
   const acrossSize = xwdData.across_size;

@@ -14,7 +14,10 @@ const IndexPage = (): JSX.Element => (
         <Link to="/basics/">Some help for new starters</Link>
       </li>
       <li>
-        <Link to="/xwd/">The 2020 Advent Crossword</Link>
+        <Link to="/xwd2020/">The 2020 Advent Crossword</Link>
+      </li>
+      <li>
+        <Link to="/xwd2024/">The 2024 Advent Crossword</Link>
       </li>
     </ul>
   </Layout>
