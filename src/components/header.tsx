@@ -15,10 +15,10 @@ class Header extends React.Component {
       <div id="header">
         <div id="menu">
           <div id="logo">
-            <div id="monkey">
+            <div id="logo-img">
               <img
-                src={this.props.parentUrl + "/static/monkey.png"}
-                alt="monkey"
+                src={this.props.parentUrl + "/static/logo.png"}
+                alt="pattern"
               />
             </div>
             <a id="name-logo" href={this.props.parentUrl + "/index.html"}>
@@ -36,9 +36,9 @@ class Header extends React.Component {
             <div id="menu-header">
               <a href={this.props.parentUrl + "/index.html"}>WR</a>
               <img
-                id="sidebar-monkey"
-                src={this.props.parentUrl + "/static/monkey.png"}
-                alt="monkey"
+                id="sidebar-logo"
+                src={this.props.parentUrl + "/static/logo.png"}
+                alt="pattern"
               />
             </div>
             <ul className="nav-items">
