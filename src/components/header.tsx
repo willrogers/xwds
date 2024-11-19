@@ -64,10 +64,10 @@ class Header extends React.Component {
                 </a>
               </li>
               <li className="header-nav-item">
-                <a href="https://twitter.com/wrgrs">
+                <a href="https://bsky.app/profile/wrgrs.bsky.social">
                   <img
-                    className="header-nav-twitter"
-                    src={this.props.parentUrl + "/static/Twitter_Logo_Blue.png"}
+                    className="header-nav-bluesky"
+                    src={this.props.parentUrl + "/static/bluesky.svg"}
                     alt="twitter"
                   ></img>
                 </a>
