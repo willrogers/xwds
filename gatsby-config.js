@@ -37,6 +37,7 @@ module.exports = {
         path: `${__dirname}/static/`,
       },
     },
+    `gatsby-plugin-image`,
   ],
   pathPrefix: "/xwds",
 };

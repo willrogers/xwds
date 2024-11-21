@@ -55,8 +55,8 @@ export function EmptyCell(props) {
   let backgroundColor = props.selected
     ? "cyan"
     : props.highlight
-    ? "lightblue"
-    : "lightgray";
+      ? "lightblue"
+      : "lightgray";
 
   return (
     <>
@@ -154,7 +154,7 @@ export function Crossword(props) {
   }
   return (
     <>
-      <h1>{props.title}</h1>
+      <h2>{props.title}</h2>
       <p>{props.preamble}</p>
       <CurrentClue clue={selectedClue}></CurrentClue>
       <div style={{ margin: "5px" }} id="xwd-container">

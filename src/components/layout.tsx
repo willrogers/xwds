@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { StaticQuery, graphql, useStaticQuery } from "gatsby";
+import { graphql, useStaticQuery } from "gatsby";
 import { Helmet } from "react-helmet";
 
 import Header from "./header";
