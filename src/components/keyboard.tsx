@@ -26,6 +26,19 @@ export const KeyboardKey = (props: {
   );
 };
 
+export const BackspaceKey = (props: {
+  keyPressed: (letter: string) => void;
+}) => {
+  return (
+    <div
+      onClick={() => props.keyPressed("Backspace")}
+      className="keyboard-key backspace"
+    >
+      {"\u232B"}
+    </div>
+  );
+};
+
 export const Keyboard = (props: {
   hideKeyboardPressed: () => void;
   keyPressed: (letter: string) => void;
@@ -64,7 +77,7 @@ export const Keyboard = (props: {
         <KeyboardKey letter="b" keyPressed={props.keyPressed} />
         <KeyboardKey letter="n" keyPressed={props.keyPressed} />
         <KeyboardKey letter="m" keyPressed={props.keyPressed} />
-        <KeyboardKey letter={"\u232B"} keyPressed={props.keyPressed} />
+        <BackspaceKey keyPressed={props.keyPressed} />
       </div>
     </div>
   );
