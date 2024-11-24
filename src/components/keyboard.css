@@ -7,18 +7,19 @@
   padding-left: 5px;
   padding-right: 5px;
   border-radius: 5px;
-  height: 40px;
-  width: 40px;
+  height: 35px;
+  width: 35px;
 }
 
 #keyboard {
   display: flex;
   flex-direction: column;
   padding-top: 5px;
+  padding-bottom: 5px;
   position: fixed;
   bottom: 0px;
   width: 100vw;
-  height: 130px;
+  height: 110px;
   background-color: lightgrey;
 }
 
@@ -27,17 +28,17 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  height: 40px;
+  gap: 6px;
+  height: 35px;
 }
 
 .keyboard-key {
   text-align: center;
   vertical-align: middle;
   text-transform: uppercase;
-  width: 7.5vw;
+  width: 8vw;
   gap: 10px;
-  height: 28px;
+  height: 30px;
   border-radius: 3px;
   background-color: grey;
   cursor: default;
