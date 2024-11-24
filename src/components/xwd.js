@@ -29,17 +29,16 @@ export function FilledCell(props) {
   );
 }
 export function EmptyCell(props) {
-  const [contents, setContents] = useState("");
   const handleKeyUp = (event) => {
     console.log("pressed " + event.key);
     if (event.key.match(/^[a-z]$/i)) {
-      setContents(event.key);
+      props.setContents(event.key);
       props.selectNextCell();
     } else if (event.key === "Backspace") {
-      setContents("");
+      props.setContents("");
       props.selectNextCell(false);
     } else if (event.key === "Delete") {
-      setContents("");
+      props.setContents("");
     } else if (event.key === "Tab") {
       props.selectNextClue();
     } else if (event.key === "ArrowUp") {
@@ -60,7 +59,7 @@ export function EmptyCell(props) {
 
   return (
     <>
-      <input
+      <div
         style={{
           position: "absolute",
           width: props.h - 1 + "px",
@@ -69,13 +68,12 @@ export function EmptyCell(props) {
           left: props.x + "px",
           backgroundColor: backgroundColor,
         }}
-        ref={(input) => input && props.selected && input.focus()}
         onClick={props.onClick}
         className="white-cell"
-        type="text"
         onKeyUp={handleKeyUp}
-        value={contents}
-      ></input>
+      >
+        {props.contents}
+      </div>
       <div
         className="clue-number"
         style={{
@@ -120,18 +118,14 @@ export function CurrentClue(props) {
 }
 
 export function Crossword(props) {
-  // a ClueSeq
-  const [selectedClueSeq, setSelectedClueSeq] = useState(null);
   // a ClueDetails
   const [selectedClue, setSelectedClue] = useState(null);
-  // a Coord
-  const [selectedCell, setSelectedCell] = useState(null);
   const [whiteCells, cells] = getWhiteCells(props.v, props.h, props.blackCells);
   // different to props.clues
   const clues = figureOutClues(props.h, props.v, whiteCells);
-  if (selectedClueSeq != null) {
+  if (props.selectedClueSeq != null) {
     for (const [num, clueSeq] of Object.entries(
-      clues[selectedClueSeq.direction]
+      clues[props.selectedClueSeq.direction]
     )) {
       const [clue, letters, date] = props.clues[clueSeq.direction][num];
       const clueDets = new ClueDetails(
@@ -141,7 +135,10 @@ export function Crossword(props) {
         letters,
         date
       );
-      if (clueSeq.equals(selectedClueSeq) && !clueDets.equals(selectedClue)) {
+      if (
+        clueSeq.equals(props.selectedClueSeq) &&
+        !clueDets.equals(selectedClue)
+      ) {
         setSelectedClue(clueDets);
       }
     }
@@ -149,8 +146,8 @@ export function Crossword(props) {
   function crosswordOnClick(num, dir) {
     console.log(`crossword onClick() ${dir} ${num}`);
     const clickedClue = clues[dir][num];
-    setSelectedClueSeq(clickedClue);
-    setSelectedCell(new Coord(clickedClue.x, clickedClue.y));
+    props.setSelectedClueSeq(clickedClue);
+    props.setSelectedCell(new Coord(clickedClue.x, clickedClue.y));
   }
   return (
     <>
@@ -165,10 +162,13 @@ export function Crossword(props) {
           h={props.h}
           v={props.h}
           clues={clues}
-          selectedClue={selectedClueSeq}
-          setSelectedClue={setSelectedClueSeq}
-          selectedCell={selectedCell}
-          setSelectedCell={setSelectedCell}
+          selectedClue={props.selectedClueSeq}
+          setSelectedClue={props.setSelectedClueSeq}
+          selectedCell={props.selectedCell}
+          setSelectedCell={props.setSelectedCell}
+          filledCells={props.filledCells}
+          setFilledCells={props.setFilledCells}
+          selectNextCell={props.selectNextCell}
         ></Grid>
       </div>
       <ClueBox
@@ -188,8 +188,8 @@ export function Crossword(props) {
 }
 
 export function Grid(props) {
-  const cellHeight = 30;
-  const cellWidth = 30;
+  const cellHeight = 28;
+  const cellWidth = 28;
 
   function cellIsBlack(cell) {
     for (let i = 0; i < props.blackCells.length; i++) {
@@ -201,6 +201,14 @@ export function Grid(props) {
     return false;
   }
 
+  function fillCell(i, j, contents) {
+    const newFilledCells = {
+      ...props.filledCells,
+    };
+    newFilledCells[`${i},${j}`] = contents;
+    props.setFilledCells(newFilledCells);
+  }
+
   const clueCells = {};
   for (let [key, value] of Object.entries(props.clues[AC])) {
     clueCells[key] = new Coord(value.x, value.y);
@@ -209,8 +217,6 @@ export function Grid(props) {
     clueCells[key] = new Coord(value.x, value.y);
   }
   function doHighlight(justClicked) {
-    console.log("just clicked");
-    console.log(justClicked);
     if (
       justClicked.x < 0 ||
       justClicked.x >= props.h ||
@@ -256,30 +262,6 @@ export function Grid(props) {
         console.log(dnHighlighted);
         props.setSelectedClue(dnHighlighted);
         return;
-      }
-    }
-  }
-
-  function selectNextCell(forwards = true) {
-    const { x, y } = props.selectedCell;
-    if (props.selectedClue.direction === AC) {
-      if (
-        forwards &&
-        x !== props.selectedClue.x + props.selectedClue.length - 1
-      ) {
-        props.setSelectedCell(new Coord(x + 1, y));
-      } else if (!forwards && x !== props.selectedClue.x) {
-        props.setSelectedCell(new Coord(x - 1, y));
-      }
-    }
-    if (props.selectedClue.direction === DN) {
-      if (
-        forwards &&
-        y !== props.selectedClue.y + props.selectedClue.length - 1
-      ) {
-        props.setSelectedCell(new Coord(x, y + 1));
-      } else if (!forwards && y !== props.selectedClue.y) {
-        props.setSelectedCell(new Coord(x, y - 1));
       }
     }
   }
@@ -400,9 +382,11 @@ export function Grid(props) {
                 j === props.selectedCell.y
               }
               onClick={(e) => doHighlight(new Coord(i, j))}
-              selectNextCell={selectNextCell}
+              selectNextCell={props.selectNextCell}
               selectNextClue={selectNextClue}
               moveCell={moveCell}
+              contents={props.filledCells[`${i},${j}`]}
+              setContents={(letter) => fillCell(i, j, letter)}
             />
           );
         }
@@ -441,7 +425,7 @@ export function ClueBox(props) {
 
         const now = new Date();
         const text =
-          now.getMonth() === 11 && now.getDate() > releaseDate
+          now.getMonth() === 10 && now.getDate() > releaseDate
             ? clueText
             : `Released on December ${releaseDate}.`;
         function onClick() {

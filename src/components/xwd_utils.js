@@ -22,6 +22,9 @@ export class Coord {
       return new Coord(this.x, this.y + increment);
     }
   }
+  str() {
+    return `${this.x},${this.y}`;
+  }
 }
 
 export class ClueSeq {
@@ -157,6 +160,6 @@ export function figureOutClues(acSquares, dnSquares, whiteSquares) {
   }
   return {
     ac: acrossClues,
-    dn: downClues
+    dn: downClues,
   };
 }

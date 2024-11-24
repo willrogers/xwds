@@ -1,0 +1,44 @@
+#keyboard-button {
+  display: block;
+  position: fixed;
+  bottom: 5px;
+  left: 5px;
+  background-color: gray;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 5px;
+  height: 40px;
+  width: 40px;
+}
+
+#keyboard {
+  display: flex;
+  flex-direction: column;
+  padding-top: 5px;
+  position: fixed;
+  bottom: 0px;
+  width: 100vw;
+  height: 130px;
+  background-color: lightgrey;
+}
+
+.keyboard-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+}
+
+.keyboard-key {
+  text-align: center;
+  vertical-align: middle;
+  text-transform: uppercase;
+  width: 7.5vw;
+  gap: 10px;
+  height: 28px;
+  border-radius: 3px;
+  background-color: grey;
+  cursor: default;
+}
