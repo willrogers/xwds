@@ -29,28 +29,6 @@ export function FilledCell(props) {
   );
 }
 export function EmptyCell(props) {
-  const handleKeyUp = (event) => {
-    console.log("pressed " + event.key);
-    if (event.key.match(/^[a-z]$/i)) {
-      props.setContents(event.key);
-      props.selectNextCell();
-    } else if (event.key === "Backspace") {
-      props.setContents("");
-      props.selectNextCell(false);
-    } else if (event.key === "Delete") {
-      props.setContents("");
-    } else if (event.key === "Tab") {
-      props.selectNextClue();
-    } else if (event.key === "ArrowUp") {
-      props.moveCell(UP);
-    } else if (event.key === "ArrowDown") {
-      props.moveCell(DOWN);
-    } else if (event.key === "ArrowLeft") {
-      props.moveCell(LEFT);
-    } else if (event.key === "ArrowRight") {
-      props.moveCell(RIGHT);
-    }
-  };
   let backgroundColor = props.selected
     ? "cyan"
     : props.highlight
@@ -70,7 +48,6 @@ export function EmptyCell(props) {
         }}
         onClick={props.onClick}
         className="white-cell"
-        onKeyUp={handleKeyUp}
       >
         {props.contents}
       </div>
@@ -246,8 +223,6 @@ export function Grid(props) {
         acHighlighted = value;
         // If this clue is the highlighted one already carry on.
         if (props.selectedClue && !props.selectedClue.equals(acHighlighted)) {
-          console.log("setiting selected clue to");
-          console.log(acHighlighted);
           props.setSelectedClue(acHighlighted);
           return;
         } else {
@@ -258,8 +233,6 @@ export function Grid(props) {
     for (let value of Object.values(props.clues[DN])) {
       if (cellInClue(value, justClicked)) {
         dnHighlighted = value;
-        console.log("setiting selected clue to");
-        console.log(dnHighlighted);
         props.setSelectedClue(dnHighlighted);
         return;
       }
@@ -311,10 +284,6 @@ export function Grid(props) {
   let highlightedCells = [];
   if (props.selectedClue != null) {
     const { x, y, length, direction } = props.selectedClue;
-    console.log(x);
-    console.log(y);
-    console.log(length);
-    console.log(direction);
     if (direction == AC) {
       for (let i = x; i < x + length; i++) {
         highlightedCells.push(new Coord(i, y));
@@ -326,9 +295,6 @@ export function Grid(props) {
     }
   }
 
-  console.log(clueCells);
-  console.log("highlights");
-  console.log(highlightedCells);
   for (let k = 0; k < props.cells.length; k++) {
     const [x, y] = props.cells[k];
     let number = null;
@@ -346,7 +312,6 @@ export function Grid(props) {
     }
     props.cells[k].push(highlight);
   }
-  console.log(props.cells);
   return (
     <div
       style={{
@@ -433,6 +398,7 @@ export function ClueBox(props) {
         }
         return (
           <Clue
+            key={number}
             number={number}
             clue={text}
             len={len}

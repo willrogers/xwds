@@ -14,12 +14,12 @@
 #keyboard {
   display: flex;
   flex-direction: column;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 6px;
   position: fixed;
   bottom: 0px;
   width: 100vw;
-  height: 110px;
+  height: 130px;
+  gap: 6px;
   background-color: lightgrey;
 }
 
@@ -29,16 +29,22 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  height: 35px;
+}
+
+.keyboard-spacer {
+  width: 8vw;
+  height: 38px;
+  background-color: transparent;
+  cursor: default;
 }
 
 .keyboard-key {
-  text-align: center;
-  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-transform: uppercase;
   width: 8vw;
-  gap: 10px;
-  height: 30px;
+  height: 38px;
   border-radius: 3px;
   background-color: grey;
   cursor: default;

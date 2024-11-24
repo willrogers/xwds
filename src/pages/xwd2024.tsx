@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { graphql, useStaticQuery } from "gatsby";
 
 import Layout from "../components/layout";
@@ -72,16 +72,27 @@ const CrosswordPage = (): JSX.Element => {
   }
   const keyPressed = (letter: string) => {
     console.log(`pressed ${letter}`);
+    const backspace = letter === "\u232B" || letter === "Backspace";
+    const cellContents = backspace ? "" : letter;
+    const nextForward = !backspace;
+
     const newFilledCells = {
       ...filledCells,
     };
     if (selectedCell) {
-      newFilledCells[selectedCell.str()] = letter;
+      newFilledCells[selectedCell.str()] = cellContents;
     }
     console.log(newFilledCells);
     setFilledCells(newFilledCells);
-    selectNextCell();
+    selectNextCell(nextForward);
   };
+  const handleKeyUp = (event: KeyboardEvent) => keyPressed(event.key);
+  useEffect(() => {
+    document.addEventListener("keyup", handleKeyUp);
+    return () => {
+      document.removeEventListener("keyup", handleKeyUp);
+    };
+  });
   rawClues.ac.forEach((element) => {
     clues.ac[element.number] = [element.clue, element.length, element.date];
   });

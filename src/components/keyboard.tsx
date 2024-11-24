@@ -56,6 +56,7 @@ export const Keyboard = (props: {
         <KeyboardKey letter="l" keyPressed={props.keyPressed} />
       </div>
       <div className="keyboard-row">
+        <div className="keyboard-spacer" />
         <KeyboardKey letter="z" keyPressed={props.keyPressed} />
         <KeyboardKey letter="x" keyPressed={props.keyPressed} />
         <KeyboardKey letter="c" keyPressed={props.keyPressed} />
@@ -63,6 +64,7 @@ export const Keyboard = (props: {
         <KeyboardKey letter="b" keyPressed={props.keyPressed} />
         <KeyboardKey letter="n" keyPressed={props.keyPressed} />
         <KeyboardKey letter="m" keyPressed={props.keyPressed} />
+        <KeyboardKey letter={"\u232B"} keyPressed={props.keyPressed} />
       </div>
     </div>
   );
