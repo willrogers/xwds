@@ -16,7 +16,8 @@
     "gatsby-source-filesystem": "^5.14.0",
     "gatsby-transformer-json": "^5.14.0",
     "gatsby-transformer-sharp": "^5.14.0",
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "react-cookie": "^7.2.2"
   },
   "devDependencies": {
     "@types/react-helmet": "^6.1.11",

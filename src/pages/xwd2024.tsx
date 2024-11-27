@@ -1,7 +1,7 @@
 import React from "react";
 import { graphql, useStaticQuery } from "gatsby";
 
-import CrosswordPage from "./crossword";
+import CrosswordPage from "../components/crossword";
 
 const Crossword2024 = (): JSX.Element => {
   const data = useStaticQuery(graphql`
