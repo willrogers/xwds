@@ -114,8 +114,8 @@ export function getWhiteCells(h, v, blackCells) {
 
 export function figureOutClues(acSquares, dnSquares, whiteSquares) {
   /* Collect clues and write in numbers */
-  var acrossClues = [];
-  var downClues = [];
+  var acrossClues = {};
+  var downClues = {};
   var clueNumber = 1;
   /* loop from right to left then top to bottom */
   for (var j = 0; j < dnSquares; j++) {

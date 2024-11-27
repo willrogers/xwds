@@ -9,8 +9,6 @@ import {
   DIRNAME,
   Coord,
   cellInClue,
-  figureOutClues,
-  getWhiteCells,
   ClueDetails,
 } from "./xwd_utils";
 
@@ -95,16 +93,11 @@ export function CurrentClue(props) {
 }
 
 export function Crossword(props) {
-  // a ClueDetails
-  const [selectedClue, setSelectedClue] = useState(null);
-  const [whiteCells, cells] = getWhiteCells(props.v, props.h, props.blackCells);
-  // different to props.clues
-  const clues = figureOutClues(props.h, props.v, whiteCells);
   if (props.selectedClueSeq != null) {
     for (const [num, clueSeq] of Object.entries(
-      clues[props.selectedClueSeq.direction]
+      props.clues[props.selectedClueSeq.direction]
     )) {
-      const [clue, letters, date] = props.clues[clueSeq.direction][num];
+      const [clue, letters, date] = props.clueSeqs[clueSeq.direction][num];
       const clueDets = new ClueDetails(
         num,
         clueSeq.direction,
@@ -114,9 +107,9 @@ export function Crossword(props) {
       );
       if (
         clueSeq.equals(props.selectedClueSeq) &&
-        !clueDets.equals(selectedClue)
+        !clueDets.equals(props.selectedClue)
       ) {
-        setSelectedClue(clueDets);
+        props.setSelectedClue(clueDets);
       }
     }
   }
@@ -130,15 +123,15 @@ export function Crossword(props) {
     <>
       <h2>{props.title}</h2>
       <p>{props.preamble}</p>
-      <CurrentClue clue={selectedClue}></CurrentClue>
+      <CurrentClue clue={props.selectedClue}></CurrentClue>
       <div style={{ margin: "5px" }} id="xwd-container">
         <Grid
           blackCells={props.blackCells}
-          whiteCells={whiteCells}
-          cells={cells}
+          whiteCells={props.whiteCells}
+          cells={props.cells}
           h={props.h}
           v={props.h}
-          clues={clues}
+          clues={props.clues}
           selectedClue={props.selectedClueSeq}
           setSelectedClue={props.setSelectedClueSeq}
           selectedCell={props.selectedCell}
@@ -150,15 +143,15 @@ export function Crossword(props) {
       </div>
       <ClueBox
         direction={AC}
-        clues={props.clues[AC]}
+        clues={props.clueSeqs[AC]}
         onClick={crosswordOnClick}
-        selectedClue={selectedClue}
+        selectedClue={props.selectedClue}
       />
       <ClueBox
         direction={DN}
-        clues={props.clues[DN]}
+        clues={props.clueSeqs[DN]}
         onClick={crosswordOnClick}
-        selectedClue={selectedClue}
+        selectedClue={props.selectedClue}
       />
     </>
   );
@@ -251,36 +244,6 @@ export function Grid(props) {
     }
   }
 
-  function selectNextClue() {
-    console.log("select next clue");
-    console.log(props.selectedClue.direction);
-    const dirClues = Object.values(props.clues[props.selectedClue.direction]);
-    const otherDirection = props.selectedClue.direction === AC ? DN : AC;
-    const otherDirClues = Object.values(props.clues[otherDirection]);
-    console.log(otherDirection);
-
-    for (let i = 0; i < dirClues.length; i++) {
-      console.log("sel");
-      console.log(props.selectedClue);
-      console.log("iter");
-      console.log(dirClues[i]);
-      if (props.selectedClue.equals(dirClues[i])) {
-        let newClue;
-        if (i !== dirClues.length - 1) {
-          console.log("setting 1");
-          newClue = dirClues[i + 1];
-        } else {
-          console.log("setting 2");
-          newClue = otherDirClues[0];
-        }
-        props.setSelectedClue(newClue);
-        const coord = new Coord(newClue.x, newClue.y);
-        props.setSelectedCell(coord);
-        break;
-      }
-    }
-  }
-
   let highlightedCells = [];
   if (props.selectedClue != null) {
     const { x, y, length, direction } = props.selectedClue;
@@ -348,7 +311,7 @@ export function Grid(props) {
               }
               onClick={(e) => doHighlight(new Coord(i, j))}
               selectNextCell={props.selectNextCell}
-              selectNextClue={selectNextClue}
+              selectNextClue={props.selectNextClue}
               moveCell={moveCell}
               contents={props.filledCells[`${i},${j}`]}
               setContents={(letter) => fillCell(i, j, letter)}
