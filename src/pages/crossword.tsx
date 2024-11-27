@@ -12,6 +12,7 @@ import {
   getWhiteCells,
 } from "../components/xwd_utils";
 import { Keyboard, KeyboardButton } from "../components/keyboard";
+import { useCookies } from "react-cookie";
 
 const CrosswordPage = (props: {
   title: string;
@@ -21,11 +22,14 @@ const CrosswordPage = (props: {
   blackSquares: any;
   rawClues: any;
 }): JSX.Element => {
+  const [cookie, setCookie, removeCookie] = useCookies();
   const [showKeyboard, setShowKeyboard] = useState<boolean>(false);
   const [selectedCell, setSelectedCell] = useState<Coord | null>(null);
   const [selectedClueSeq, setSelectedClueSeq] = useState<ClueSeq | null>(null);
   const [selectedClue, setSelectedClue] = useState<ClueDetails | null>(null);
-  const [filledCells, setFilledCells] = useState<Record<string, string>>({});
+  const [filledCells, setFilledCells] = useState<Record<string, string>>(
+    cookie.cells || {}
+  );
   const clueSeqs = { ac: {}, dn: {} };
   props.rawClues.ac.forEach((element) => {
     clueSeqs.ac[element.number] = [element.clue, element.length, element.date];
@@ -107,11 +111,13 @@ const CrosswordPage = (props: {
       if (selectedCell) {
         newFilledCells[selectedCell.str()] = cellContents;
       }
-      console.log(newFilledCells);
       setFilledCells(newFilledCells);
+      setCookie("cells", newFilledCells, {
+        sameSite: "strict",
+        expires: new Date(9999),
+      });
       selectNextCell(nextForward);
     } else if (letter === "Tab") {
-      console.log("selne");
       selectNextClue();
     } else if ((letter = "ArrowRight")) {
     }
