@@ -114,8 +114,7 @@ export function Crossword(props) {
     }
   }
   function crosswordOnClick(num, dir) {
-    console.log(`crossword onClick() ${dir} ${num}`);
-    const clickedClue = clues[dir][num];
+    const clickedClue = props.clues[dir][num];
     props.setSelectedClueSeq(clickedClue);
     props.setSelectedCell(new Coord(clickedClue.x, clickedClue.y));
   }
