@@ -113,7 +113,7 @@ export function Crossword(props) {
       }
     }
   }
-  function crosswordOnClick(num, dir) {
+  function clueClicked(num, dir) {
     const clickedClue = props.clues[dir][num];
     props.setSelectedClueSeq(clickedClue);
     props.setSelectedCell(new Coord(clickedClue.x, clickedClue.y));
@@ -143,13 +143,13 @@ export function Crossword(props) {
       <ClueBox
         direction={AC}
         clues={props.clueSeqs[AC]}
-        onClick={crosswordOnClick}
+        onClick={clueClicked}
         selectedClue={props.selectedClue}
       />
       <ClueBox
         direction={DN}
         clues={props.clueSeqs[DN]}
-        onClick={crosswordOnClick}
+        onClick={clueClicked}
         selectedClue={props.selectedClue}
       />
     </>
@@ -214,7 +214,7 @@ export function Grid(props) {
       if (cellInClue(value, justClicked)) {
         acHighlighted = value;
         // If this clue is the highlighted one already carry on.
-        if (props.selectedClue && !props.selectedClue.equals(acHighlighted)) {
+        if (!props.selectedClue || !props.selectedClue.equals(acHighlighted)) {
           props.setSelectedClue(acHighlighted);
           return;
         } else {
