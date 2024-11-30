@@ -26,6 +26,7 @@
   color: transparent;
   outline: none;
   cursor: default;
+  user-select: none;
 }
 .white-cell:first-line {
   display: inline-block;
@@ -40,6 +41,7 @@
 .clue-number {
   font-size: 11px;
   pointer-events: none;
+  user-select: none;
 }
 
 .clue {

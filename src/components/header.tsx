@@ -17,7 +17,7 @@ const Header = (props: { parentUrl: string }): JSX.Element => {
     <div id="header">
       <div id="menu">
         <div id="logo">
-          <div id="logo-img">
+          <div id="logo-img" className="rotator">
             <img src={props.parentUrl + "/static/logo.png"} alt="pattern" />
           </div>
           <a id="name-logo" href={props.parentUrl + "/index.html"}>
@@ -54,7 +54,7 @@ const Header = (props: { parentUrl: string }): JSX.Element => {
               <a href={props.parentUrl + "/xwds"}>Crosswords</a>
             </li>
             <li className="header-nav-item">
-              <a href="https://github.com/willrogers">
+              <a href="https://github.com/willrogers" className="rotator">
                 <img
                   className="header-nav-github"
                   src={props.parentUrl + "/static/GitHub-Mark-64px.png"}
@@ -63,7 +63,10 @@ const Header = (props: { parentUrl: string }): JSX.Element => {
               </a>
             </li>
             <li className="header-nav-item">
-              <a href="https://bsky.app/profile/wrgrs.bsky.social">
+              <a
+                href="https://bsky.app/profile/wrgrs.bsky.social"
+                className="rotator"
+              >
                 <img
                   className="header-nav-bluesky"
                   src={props.parentUrl + "/static/bluesky.svg"}

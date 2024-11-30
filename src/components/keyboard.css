@@ -48,6 +48,7 @@
   border-radius: 3px;
   background-color: grey;
   cursor: default;
+  user-select: none;
 }
 
 .backspace {
