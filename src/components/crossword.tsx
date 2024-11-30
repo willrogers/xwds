@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Layout from "./layout";
-import SEO from "./seo";
-import { Crossword } from "./xwd";
+import Layout from "../components/layout";
+import SEO from "../components/seo";
+import { Crossword } from "../components/xwd";
 import {
   AC,
   ClueDetails,
@@ -10,8 +10,8 @@ import {
   DN,
   figureOutClues,
   getWhiteCells,
-} from "./xwd_utils";
-import { Keyboard, KeyboardButton } from "./keyboard";
+} from "../components/xwd_utils";
+import { Keyboard, KeyboardButton } from "../components/keyboard";
 import { useCookies } from "react-cookie";
 
 const CrosswordPage = (props: {
@@ -46,7 +46,11 @@ const CrosswordPage = (props: {
     props.downSize,
     blackCells
   );
-  const clues = figureOutClues(props.acrossSize, props.downSize, whiteCells);
+  const clues: Record<string, Record<string, ClueSeq>> = figureOutClues(
+    props.acrossSize,
+    props.downSize,
+    whiteCells
+  );
   function selectNextCell(forwards = true) {
     console.log(`selected cell ${selectedCell}`);
     if (selectedCell && selectedClueSeq) {
@@ -141,6 +145,23 @@ const CrosswordPage = (props: {
       document.removeEventListener("keyup", handleKeyUp);
     };
   });
+  if (selectedClueSeq != null) {
+    for (const [num, clueSeq] of Object.entries(
+      clues[selectedClueSeq.direction]
+    )) {
+      const [clue, letters, date] = clueSeqs[clueSeq.direction][num];
+      const clueDets = new ClueDetails(
+        num,
+        clueSeq.direction,
+        clue,
+        letters,
+        date
+      );
+      if (clueSeq.equals(selectedClueSeq) && !clueDets.equals(selectedClue)) {
+        setSelectedClue(clueDets);
+      }
+    }
+  }
 
   return (
     <>

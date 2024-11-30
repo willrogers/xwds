@@ -92,26 +92,6 @@ export function CurrentClue(props) {
 }
 
 export function Crossword(props) {
-  if (props.selectedClueSeq != null) {
-    for (const [num, clueSeq] of Object.entries(
-      props.clues[props.selectedClueSeq.direction]
-    )) {
-      const [clue, letters, date] = props.clueSeqs[clueSeq.direction][num];
-      const clueDets = new ClueDetails(
-        num,
-        clueSeq.direction,
-        clue,
-        letters,
-        date
-      );
-      if (
-        clueSeq.equals(props.selectedClueSeq) &&
-        !clueDets.equals(props.selectedClue)
-      ) {
-        props.setSelectedClue(clueDets);
-      }
-    }
-  }
   function clueClicked(num, dir) {
     const clickedClue = props.clues[dir][num];
     props.setSelectedClueSeq(clickedClue);
