@@ -365,7 +365,7 @@ export function Clue(props) {
   }
   return (
     <div className={classNames} onClick={props.onClick}>
-      {props.number}. {props.clue} ({props.len.join(", ")})
+      {props.number}. {props.clue} ({props.len.join(",")})
     </div>
   );
 }
