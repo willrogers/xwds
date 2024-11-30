@@ -68,12 +68,11 @@ export function EmptyCell(props) {
 export function CurrentClue(props) {
   let text = "No clue selected.";
   if (props.clue !== null) {
-    const { num, direction, clue, letters, releaseDate } = props.clue;
+    const { num, direction, clue, letters, releaseDay } = props.clue;
     const now = new Date();
+    const releaseDate = new Date(props.year, props.month, releaseDay);
     const words =
-      now.getMonth() === 11 && now.getDate() > releaseDate
-        ? clue
-        : `Released on December ${releaseDate}.`;
+      now > releaseDate ? clue : `Released on December ${releaseDay}.`;
     text = `${num} ${direction}. ${words} (${letters})`;
   }
   return (
@@ -122,7 +121,11 @@ export function Crossword(props) {
     <>
       <h2>{props.title}</h2>
       <p>{props.preamble}</p>
-      <CurrentClue clue={props.selectedClue}></CurrentClue>
+      <CurrentClue
+        clue={props.selectedClue}
+        year={props.year}
+        month={props.month}
+      ></CurrentClue>
       <div style={{ margin: "5px" }} id="xwd-container">
         <Grid
           blackCells={props.blackCells}
@@ -145,12 +148,16 @@ export function Crossword(props) {
         clues={props.clueSeqs[AC]}
         onClick={clueClicked}
         selectedClue={props.selectedClue}
+        year={props.year}
+        month={props.month}
       />
       <ClueBox
         direction={DN}
         clues={props.clueSeqs[DN]}
         onClick={clueClicked}
         selectedClue={props.selectedClue}
+        year={props.year}
+        month={props.month}
       />
     </>
   );
@@ -207,7 +214,6 @@ export function Grid(props) {
     if (!matched) {
       return;
     }
-    const highlighted = [];
     let acHighlighted = null;
     let dnHighlighted = null;
     for (let value of Object.values(props.clues[AC])) {
@@ -348,13 +354,12 @@ export function ClueBox(props) {
       {Object.entries(props.clues).map((entry) => {
         const [number, vals] = entry;
         const selected = props.direction === direction && number === num;
-        const [clueText, len, releaseDate] = vals;
+        const [clueText, len, releaseDay] = vals;
 
         const now = new Date();
+        const releaseDate = new Date(props.year, props.month, releaseDay);
         const text =
-          now.getMonth() === 10 && now.getDate() > releaseDate
-            ? clueText
-            : `Released on December ${releaseDate}.`;
+          now > releaseDate ? clueText : `Released on December ${releaseDay}.`;
         function onClick() {
           clueBoxOnClick(number);
         }
@@ -380,7 +385,7 @@ export function Clue(props) {
   }
   return (
     <div className={classNames} onClick={props.onClick}>
-      {props.number}. {props.clue} ({props.len})
+      {props.number}. {props.clue} ({props.len.join(", ")})
     </div>
   );
 }

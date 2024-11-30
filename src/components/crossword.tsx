@@ -17,6 +17,8 @@ import { useCookies } from "react-cookie";
 const CrosswordPage = (props: {
   title: string;
   preamble: string;
+  year: number;
+  month: number;
   acrossSize: number;
   downSize: number;
   blackSquares: any;
@@ -147,6 +149,8 @@ const CrosswordPage = (props: {
         <Crossword
           title={props.title}
           preamble={props.preamble}
+          year={props.year}
+          month={props.month}
           blackCells={blackCells}
           whiteCells={whiteCells}
           cells={cells}

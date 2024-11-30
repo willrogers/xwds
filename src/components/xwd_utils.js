@@ -46,12 +46,12 @@ export class ClueSeq {
 }
 
 export class ClueDetails {
-  constructor(num, direction, clue, letters, releaseDate) {
+  constructor(num, direction, clue, letters, releaseDay) {
     this.num = num;
     this.direction = direction;
     this.clue = clue;
     this.letters = letters;
-    this.releaseDate = releaseDate;
+    this.releaseDay = releaseDay;
   }
   equals(other) {
     return (

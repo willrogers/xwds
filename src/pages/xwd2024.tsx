@@ -44,6 +44,8 @@ const Crossword2024 = (): JSX.Element => {
     <CrosswordPage
       title={title}
       preamble={preamble}
+      year={2024}
+      month={11}
       acrossSize={acrossSize}
       downSize={downSize}
       blackSquares={blackSquares}
