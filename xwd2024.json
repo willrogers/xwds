@@ -22,10 +22,10 @@
   "clues": {
     "ac": [
       { "number": "1", "clue": "I count out the centre in European democracy", "length": [5], "date": 4 },
-      { "number": "4", "clue": "Refresh to update clues ...", "length": [6], "date": 2 },
+      { "number": "4", "clue": "Refresh to update clues ...", "length": [6], "date": 20 },
       { "number": "9", "clue": "Refresh to update clues ...", "length": [5], "date": 15 },
-      { "number": "10", "clue": "Large oxygen supply for woody tissue", "length": [7], "date": 8 },
-      { "number": "11", "clue": "Refresh to update clues ...", "length": [6], "date": 3 },
+      { "number": "10", "clue": "Large oxygen supply for woody tissue", "length": [7], "date": 16 },
+      { "number": "11", "clue": "Refresh to update clues ...", "length": [6], "date": 19 },
       { "number": "12", "clue": "Chap in front, find a backbone!", "length": [3, 2], "date": 1 },
       { "number": "13", "clue": "Social outcast on file is shredded", "length": [2, 4], "date": 13 },
       { "number": "15", "clue": "Refresh to update clues ...", "length": [6], "date": 22 },
@@ -39,17 +39,17 @@
     "dn": [
       { "number": "1", "clue": "African hiding in big box", "length": [4], "date": 21 },
       { "number": "2", "clue": "Refresh to update clues ...", "length": [7], "date": 13 },
-      { "number": "3", "clue": "Greeting twice, given small things that go up and down", "length": [5], "date": 3 },
-      { "number": "5", "clue": "Hermit? Not the last one to be a wise man", "length": [7], "date": 6 },
+      { "number": "3", "clue": "Keep switching between small toys", "length": [5], "date": 8 },
+      { "number": "5", "clue": "Hermit? Not the last one to be a wise man", "length": [7], "date": 2 },
       { "number": "6", "clue": "Refresh to update clues ...", "length": [5], "date": 18 },
-      { "number": "7", "clue": "Horse with no tail rearing up in temper at photographic equipment", "length": [7], "date": 16 },
+      { "number": "7", "clue": "Horse with no tail rearing up in temper at photographic equipment", "length": [7], "date": 3 },
       { "number": "8", "clue": "Type of gravy, new for southern county", "length": [4], "date": 5 },
-      { "number": "13", "clue": "Extras that could cause a problem for lottery draw.", "length": [7], "date": 9 },
+      { "number": "13", "clue": "Extras that could cause a problem for lottery draw.", "length": [2, 5], "date": 7 },
       { "number": "14", "clue": "Refresh to update clues ...", "length": [7], "date": 10 },
-      { "number": "16", "clue": "Sounds like a crack chess player", "length": [7], "date": 19 },
+      { "number": "16", "clue": "Sounds like a crack chess player", "length": [7], "date": 6 },
       { "number": "18", "clue": "Refresh to update clues ...", "length": [5], "date": 12 },
       { "number": "19", "clue": "Refresh to update clues ...", "length": [4], "date": 9 },
-      { "number": "20", "clue": "Refresh to update clues ...", "length": [5], "date": 2 },
+      { "number": "20", "clue": "Refresh to update clues ...", "length": [5], "date": 19 },
       { "number": "21", "clue": "Refresh to update clues ...", "length": [4], "date": 22 }
     ]
   },
