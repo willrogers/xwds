@@ -116,7 +116,7 @@ const CrosswordPage = (props: {
       setFilledCells(newFilledCells);
       setCookie("cells", newFilledCells, {
         sameSite: "strict",
-        expires: new Date(9999),
+        expires: new Date(2100, 1, 1),
       });
       selectNextCell(nextForward);
     } else if (letter === "Tab") {
