@@ -18,6 +18,7 @@
 
 .white-cell {
   display: inline-block;
+  background-color: white;
   border: 1px solid black;
   padding: 0;
   text-align: center;
@@ -46,6 +47,10 @@
 
 .clue {
   cursor: default;
+}
+
+.today {
+  background-color: #ffd6cc;
 }
 
 .selected {

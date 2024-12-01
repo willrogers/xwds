@@ -31,7 +31,7 @@ export function EmptyCell(props) {
     ? "cyan"
     : props.highlight
       ? "lightblue"
-      : "lightgray";
+      : "white";
 
   return (
     <>
@@ -338,6 +338,7 @@ export function ClueBox(props) {
 
         const now = new Date();
         const releaseDate = new Date(props.year, props.month, releaseDay);
+        const today = now.getDay() === releaseDay - 1;
         const text =
           now > releaseDate ? clueText : `Released on December ${releaseDay}.`;
         function onClick() {
@@ -351,6 +352,7 @@ export function ClueBox(props) {
             len={len}
             onClick={onClick}
             selected={selected}
+            today={today}
           />
         );
       })}
@@ -360,6 +362,9 @@ export function ClueBox(props) {
 
 export function Clue(props) {
   let classNames = "clue";
+  if (props.today) {
+    classNames = `${classNames} today`;
+  }
   if (props.selected) {
     classNames = `${classNames} selected`;
   }
