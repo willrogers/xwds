@@ -38,7 +38,7 @@ const CrosswordPage = (props: {
     props.downSize,
     blackCells
   );
-  const clues: Record<string, Record<string, ClueSeq>> = figureOutClues(
+  const clues: Map<string, Map<string, ClueSeq>> = figureOutClues(
     props.acrossSize,
     props.downSize,
     whiteCells
