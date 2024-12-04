@@ -6,7 +6,7 @@
 :root {
   --unreleased-color: lightgrey;
   --today-color: #ffd6cc;
-  --selected-color: cyan;
+  --selected-color: lightblue;
   --highlight-color: #d6f0ff;
 }
 
@@ -47,6 +47,7 @@
 }
 
 .clue {
+  padding-left: 5px;
   cursor: default;
 }
 

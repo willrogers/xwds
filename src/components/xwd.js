@@ -28,7 +28,6 @@ export function CurrentClue(props) {
         style={{
           textWrap: "nowrap",
           fontWeight: "bold",
-          //  padding: "5px",
           margin: "5px",
         }}
       >
@@ -37,7 +36,6 @@ export function CurrentClue(props) {
       <div
         style={{
           fontWeight: "bold",
-          // padding: "5px",
           margin: "5px",
           backgroundColor: "lightblue",
         }}
