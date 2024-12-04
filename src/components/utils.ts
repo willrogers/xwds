@@ -5,7 +5,7 @@ export const UP = "up";
 export const DOWN = "down";
 export const LEFT = "left";
 export const RIGHT = "right";
-export const DIRNAME = { ac: "Across", dn: "Down" };
+export const DIRNAME = { [AC]: "Across", [DN]: "Down" };
 
 export class Coord {
   x: number;
@@ -15,7 +15,7 @@ export class Coord {
     this.x = x;
     this.y = y;
   }
-  equals(other: Coord): boolean {
+  equals(other: Coord | null): boolean {
     return other !== null && this.x === other.x && this.y === other.y;
   }
   nextCell(direction: string, forwards = true): Coord {
@@ -132,11 +132,15 @@ export function getWhiteCells(h: number, v: number, blackCells: Array<Coord>) {
 
 export type ClueMap = { [key: string]: ClueSeq };
 export type AllClues = {
-  AC: ClueMap;
-  DN: ClueMap;
+  [AC]: ClueMap;
+  [DN]: ClueMap;
 };
 
-export function figureOutClues(acSquares, dnSquares, whiteSquares): AllClues {
+export function figureOutClues(
+  acSquares: number,
+  dnSquares: number,
+  whiteSquares
+): AllClues {
   /* Collect clues and write in numbers */
   var acrossClues: ClueMap = {};
   var downClues: ClueMap = {};
@@ -183,7 +187,7 @@ export function figureOutClues(acSquares, dnSquares, whiteSquares): AllClues {
     }
   }
   return {
-    AC: acrossClues,
-    DN: downClues,
+    [AC]: acrossClues,
+    [DN]: downClues,
   };
 }

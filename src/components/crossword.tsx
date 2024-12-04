@@ -5,7 +5,6 @@ import {
   AC,
   AllClues,
   ClueDetails,
-  ClueMap,
   ClueSeq,
   Coord,
   DN,
@@ -35,18 +34,18 @@ const CrosswordPage = (props: {
     cookie.cells || {}
   );
   const clueArrays: {
-    ac: { [key: number]: Array<[string, number, number]> };
-    dn: { [key: number]: Array<[string, number, number]> };
-  } = { ac: {}, dn: {} };
-  props.rawClues.ac.forEach((element) => {
-    clueArrays.ac[element.number] = [
+    [AC]: { [key: number]: Array<[string, number, number]> };
+    [DN]: { [key: number]: Array<[string, number, number]> };
+  } = { [AC]: {}, [DN]: {} };
+  props.rawClues[AC].forEach((element) => {
+    clueArrays[AC][element.number] = [
       element.clue,
       element.length,
       element.date,
     ];
   });
   props.rawClues.dn.forEach((element) => {
-    clueArrays.dn[element.number] = [
+    clueArrays[DN][element.number] = [
       element.clue,
       element.length,
       element.date,
@@ -124,32 +123,43 @@ const CrosswordPage = (props: {
     }
     return false;
   }
-  function doHighlight(justClicked: Coord): void {
+  function doHighlight(cell: Coord, clicked: boolean): void {
     if (
-      justClicked.x < 0 ||
-      justClicked.x >= props.acrossSize ||
-      justClicked.y < 0 ||
-      justClicked.y >= props.downSize
+      cell.x < 0 ||
+      cell.x >= props.acrossSize ||
+      cell.y < 0 ||
+      cell.y >= props.downSize
     ) {
       return;
     }
-    if (cellIsBlack(justClicked)) {
+    if (cellIsBlack(cell)) {
       return;
     }
-    setSelectedCell(justClicked);
+    setSelectedCell(cell);
     let matched = false;
     for (const cell of whiteCells) {
-      if (justClicked.equals(cell)) {
+      if (cell.equals(cell)) {
         matched = true;
       }
     }
     if (!matched) {
       return;
     }
+    if (!clicked && selectedClueSeq && cellInClue(selectedClueSeq, cell)) {
+      return;
+    }
+    if (
+      clicked &&
+      selectedClueSeq &&
+      !cell.equals(selectedCell) &&
+      cellInClue(selectedClueSeq, cell)
+    ) {
+      return;
+    }
     let acHighlighted: ClueSeq | null = null;
     let dnHighlighted: ClueSeq | null = null;
     for (let value of Object.values<ClueSeq>(clues[AC])) {
-      if (cellInClue(value, justClicked)) {
+      if (cellInClue(value, cell)) {
         acHighlighted = value;
         // If this clue is the highlighted one already carry on.
         if (!selectedClueSeq || !selectedClueSeq.equals(acHighlighted)) {
@@ -161,7 +171,7 @@ const CrosswordPage = (props: {
       }
     }
     for (let value of Object.values<ClueSeq>(clues[DN])) {
-      if (cellInClue(value, justClicked)) {
+      if (cellInClue(value, cell)) {
         dnHighlighted = value;
         setSelectedClueSeq(dnHighlighted);
         return;
@@ -169,7 +179,7 @@ const CrosswordPage = (props: {
     }
   }
 
-  const keyPressed = (letter: string) => {
+  const keyPressed = (letter: string): void => {
     const backspace = letter === "\u232B" || letter === "Backspace";
     if (letter.match(/^[a-z]$/i) || backspace) {
       console.log(`selne ${backspace}`);
@@ -192,13 +202,29 @@ const CrosswordPage = (props: {
       selectNextClue();
     } else if (selectedCell) {
       if (letter === "ArrowRight") {
-        doHighlight(selectedCell.nextCell(AC, true));
+        if (selectedClueSeq?.direction === AC) {
+          doHighlight(selectedCell.nextCell(AC, true), false);
+        } else {
+          doHighlight(selectedCell, true);
+        }
       } else if (letter === "ArrowLeft") {
-        doHighlight(selectedCell.nextCell(AC, false));
+        if (selectedClueSeq?.direction === AC) {
+          doHighlight(selectedCell.nextCell(AC, false), false);
+        } else {
+          doHighlight(selectedCell, true);
+        }
       } else if (letter === "ArrowUp") {
-        doHighlight(selectedCell.nextCell(DN, false));
+        if (selectedClueSeq?.direction === DN) {
+          doHighlight(selectedCell.nextCell(DN, false), false);
+        } else {
+          doHighlight(selectedCell, true);
+        }
       } else if (letter === "ArrowDown") {
-        doHighlight(selectedCell.nextCell(DN, true));
+        if (selectedClueSeq?.direction === DN) {
+          doHighlight(selectedCell.nextCell(DN, true), false);
+        } else {
+          doHighlight(selectedCell, true);
+        }
       }
     }
   };

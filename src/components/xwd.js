@@ -1,6 +1,5 @@
 import React from "react";
-import { AC, DN, DIRNAME } from "./xwd_utils";
-import { Coord } from "./utils";
+import { AC, DN, DIRNAME, Coord } from "./utils";
 import { EmptyCell, FilledCell } from "./cells";
 
 export function CurrentClue(props) {
@@ -50,6 +49,9 @@ export function CurrentClue(props) {
 }
 
 export function Grid(props) {
+  console.log(props.clues);
+  console.log(props.clues[AC]);
+  console.log(props.clues[DN]);
   const cellHeight = 28;
   const cellWidth = 28;
 
@@ -135,7 +137,7 @@ export function Grid(props) {
                 i === props.selectedCell.x &&
                 j === props.selectedCell.y
               }
-              onClick={() => props.doHighlight(new Coord(i, j))}
+              onClick={() => props.doHighlight(new Coord(i, j), true)}
             />
           );
         }
