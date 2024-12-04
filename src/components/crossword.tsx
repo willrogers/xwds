@@ -1,8 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/layout";
 import { ClueBox, CurrentClue, Grid } from "../components/xwd";
-import { AC, ClueDetails, DN, figureOutClues } from "../components/xwd_utils";
-import { ClueSeq, Coord, cellInClue, getWhiteCells } from "./utils";
+import {
+  AC,
+  AllClues,
+  ClueDetails,
+  ClueMap,
+  ClueSeq,
+  Coord,
+  DN,
+  cellInClue,
+  figureOutClues,
+  getWhiteCells,
+} from "./utils";
 import { Keyboard, KeyboardButton } from "../components/keyboard";
 import { useCookies } from "react-cookie";
 
@@ -24,12 +34,23 @@ const CrosswordPage = (props: {
   const [filledCells, setFilledCells] = useState<Record<string, string>>(
     cookie.cells || {}
   );
-  const clueSeqs = { ac: {}, dn: {} };
+  const clueArrays: {
+    ac: { [key: number]: Array<[string, number, number]> };
+    dn: { [key: number]: Array<[string, number, number]> };
+  } = { ac: {}, dn: {} };
   props.rawClues.ac.forEach((element) => {
-    clueSeqs.ac[element.number] = [element.clue, element.length, element.date];
+    clueArrays.ac[element.number] = [
+      element.clue,
+      element.length,
+      element.date,
+    ];
   });
   props.rawClues.dn.forEach((element) => {
-    clueSeqs.dn[element.number] = [element.clue, element.length, element.date];
+    clueArrays.dn[element.number] = [
+      element.clue,
+      element.length,
+      element.date,
+    ];
   });
 
   const blackCells = props.blackSquares.map(([x, y]) => new Coord(x, y));
@@ -38,7 +59,7 @@ const CrosswordPage = (props: {
     props.downSize,
     blackCells
   );
-  const clues: Record<string, Record<string, ClueSeq>> = figureOutClues(
+  const clues: AllClues = figureOutClues(
     props.acrossSize,
     props.downSize,
     whiteCells
@@ -68,9 +89,9 @@ const CrosswordPage = (props: {
   function selectNextClue(): void {
     if (selectedClueSeq !== null) {
       console.log("select next clue");
-      const dirClues = Object.values(clues[selectedClueSeq.direction]);
+      const dirClues = Object.values<ClueSeq>(clues[selectedClueSeq.direction]);
       const otherDirection = selectedClueSeq.direction === AC ? DN : AC;
-      const otherDirClues = Object.values(clues[otherDirection]);
+      const otherDirClues = Object.values<ClueSeq>(clues[otherDirection]);
 
       for (let i = 0; i < dirClues.length; i++) {
         console.log("sel");
@@ -127,7 +148,7 @@ const CrosswordPage = (props: {
     }
     let acHighlighted: ClueSeq | null = null;
     let dnHighlighted: ClueSeq | null = null;
-    for (let value of Object.values(clues[AC])) {
+    for (let value of Object.values<ClueSeq>(clues[AC])) {
       if (cellInClue(value, justClicked)) {
         acHighlighted = value;
         // If this clue is the highlighted one already carry on.
@@ -139,7 +160,7 @@ const CrosswordPage = (props: {
         }
       }
     }
-    for (let value of Object.values(clues[DN])) {
+    for (let value of Object.values<ClueSeq>(clues[DN])) {
       if (cellInClue(value, justClicked)) {
         dnHighlighted = value;
         setSelectedClueSeq(dnHighlighted);
@@ -204,10 +225,10 @@ const CrosswordPage = (props: {
     };
   });
   if (selectedClueSeq != null) {
-    for (const [num, clueSeq] of Object.entries(
+    for (const [num, clueSeq] of Object.entries<ClueSeq>(
       clues[selectedClueSeq.direction]
     )) {
-      const [clue, letters, date] = clueSeqs[clueSeq.direction][num];
+      const [clue, letters, date] = clueArrays[clueSeq.direction][num];
       const clueDets = new ClueDetails(
         num,
         clueSeq.direction,
@@ -251,7 +272,7 @@ const CrosswordPage = (props: {
         </div>
         <ClueBox
           direction={AC}
-          clues={clueSeqs[AC]}
+          clues={clueArrays[AC]}
           onClick={clueClicked}
           selectedClue={selectedClue}
           year={props.year}
@@ -259,7 +280,7 @@ const CrosswordPage = (props: {
         />
         <ClueBox
           direction={DN}
-          clues={clueSeqs[DN]}
+          clues={clueArrays[DN]}
           onClick={clueClicked}
           selectedClue={selectedClue}
           year={props.year}
