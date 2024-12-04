@@ -1,161 +1,57 @@
 import React from "react";
-import {
-  AC,
-  DN,
-  UP,
-  DOWN,
-  LEFT,
-  RIGHT,
-  DIRNAME,
-  Coord,
-  cellInClue,
-  ClueDetails,
-} from "./xwd_utils";
-
-export function FilledCell(props) {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        width: props.h + 1 + "px",
-        height: props.v + 1 + "px",
-        top: props.y + "px",
-        left: props.x + "px",
-      }}
-      className="black-cell"
-    ></div>
-  );
-}
-export function EmptyCell(props) {
-  let backgroundColor = props.selected
-    ? "cyan"
-    : props.highlight
-      ? "lightblue"
-      : "white";
-
-  return (
-    <>
-      <div
-        style={{
-          position: "absolute",
-          width: props.h - 1 + "px",
-          height: props.v - 1 + "px",
-          top: props.y + "px",
-          left: props.x + "px",
-          backgroundColor: backgroundColor,
-        }}
-        onClick={props.onClick}
-        className="white-cell"
-      >
-        {props.contents}
-      </div>
-      <div
-        className="clue-number"
-        style={{
-          position: "absolute",
-          width: props.h - 1 + "px",
-          height: props.v - 1 + "px",
-          top: props.y + "px",
-          left: props.x + 2 + "px",
-        }}
-      >
-        {props.number}
-      </div>
-    </>
-  );
-}
+import { AC, DN, DIRNAME } from "./xwd_utils";
+import { Coord } from "./utils";
+import { EmptyCell, FilledCell } from "./cells";
 
 export function CurrentClue(props) {
+  let id = "";
   let text = "No clue selected.";
   if (props.clue !== null) {
     const { num, direction, clue, letters, releaseDay } = props.clue;
+    id = `${num} ${direction}`;
     const now = new Date();
     const releaseDate = new Date(props.year, props.month, releaseDay);
     const words =
       now > releaseDate ? clue : `Released on December ${releaseDay}.`;
-    text = `${num} ${direction}. ${words} (${letters})`;
+    text = `${words}\u00A0(${letters})`;
   }
   return (
-    <div style={{ padding: "15px" }}>
-      <span
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        margin: "15px",
+        fontWeight: "bold",
+        backgroundColor: "lightblue",
+      }}
+    >
+      <div
+        style={{
+          textWrap: "nowrap",
+          fontWeight: "bold",
+          //  padding: "5px",
+          margin: "5px",
+        }}
+      >
+        {id}
+      </div>
+      <div
         style={{
           fontWeight: "bold",
-          padding: "5px",
+          // padding: "5px",
           margin: "5px",
           backgroundColor: "lightblue",
         }}
       >
         {text}
-      </span>
-    </div>
-  );
-}
-
-export function Crossword(props) {
-  function clueClicked(num, dir) {
-    const clickedClue = props.clues[dir][num];
-    props.setSelectedClueSeq(clickedClue);
-    props.setSelectedCell(new Coord(clickedClue.x, clickedClue.y));
-  }
-  return (
-    <>
-      <h2>{props.title}</h2>
-      <p>{props.preamble}</p>
-      <CurrentClue
-        clue={props.selectedClue}
-        year={props.year}
-        month={props.month}
-      ></CurrentClue>
-      <div style={{ margin: "5px" }} id="xwd-container">
-        <Grid
-          blackCells={props.blackCells}
-          whiteCells={props.whiteCells}
-          cells={props.cells}
-          h={props.h}
-          v={props.h}
-          clues={props.clues}
-          selectedClue={props.selectedClueSeq}
-          setSelectedClue={props.setSelectedClueSeq}
-          selectedCell={props.selectedCell}
-          setSelectedCell={props.setSelectedCell}
-          filledCells={props.filledCells}
-          setFilledCells={props.setFilledCells}
-          selectNextCell={props.selectNextCell}
-        ></Grid>
       </div>
-      <ClueBox
-        direction={AC}
-        clues={props.clueSeqs[AC]}
-        onClick={clueClicked}
-        selectedClue={props.selectedClue}
-        year={props.year}
-        month={props.month}
-      />
-      <ClueBox
-        direction={DN}
-        clues={props.clueSeqs[DN]}
-        onClick={clueClicked}
-        selectedClue={props.selectedClue}
-        year={props.year}
-        month={props.month}
-      />
-    </>
+    </div>
   );
 }
 
 export function Grid(props) {
   const cellHeight = 28;
   const cellWidth = 28;
-
-  function cellIsBlack(cell) {
-    for (let i = 0; i < props.blackCells.length; i++) {
-      const blackCell = props.blackCells[i];
-      if (cell.x === blackCell.x && cell.y === blackCell.y) {
-        return true;
-      }
-    }
-    return false;
-  }
 
   function fillCell(i, j, contents) {
     const newFilledCells = {
@@ -171,62 +67,6 @@ export function Grid(props) {
   }
   for (let [key, value] of Object.entries(props.clues[DN])) {
     clueCells[key] = new Coord(value.x, value.y);
-  }
-  function doHighlight(justClicked) {
-    if (
-      justClicked.x < 0 ||
-      justClicked.x >= props.h ||
-      justClicked.y < 0 ||
-      justClicked.y >= props.v
-    ) {
-      return;
-    }
-    if (cellIsBlack(justClicked)) {
-      return;
-    }
-    props.setSelectedCell(justClicked);
-    let matched = false;
-    for (const cell of props.whiteCells) {
-      if (justClicked.equals(cell)) {
-        matched = true;
-      }
-    }
-    if (!matched) {
-      return;
-    }
-    let acHighlighted = null;
-    let dnHighlighted = null;
-    for (let value of Object.values(props.clues[AC])) {
-      if (cellInClue(value, justClicked)) {
-        acHighlighted = value;
-        // If this clue is the highlighted one already carry on.
-        if (!props.selectedClue || !props.selectedClue.equals(acHighlighted)) {
-          props.setSelectedClue(acHighlighted);
-          return;
-        } else {
-          break;
-        }
-      }
-    }
-    for (let value of Object.values(props.clues[DN])) {
-      if (cellInClue(value, justClicked)) {
-        dnHighlighted = value;
-        props.setSelectedClue(dnHighlighted);
-        return;
-      }
-    }
-  }
-
-  function moveCell(direction) {
-    if (direction === UP) {
-      doHighlight(props.selectedCell.nextCell(DN, false));
-    } else if (direction === DOWN) {
-      doHighlight(props.selectedCell.nextCell(DN, true));
-    } else if (direction === LEFT) {
-      doHighlight(props.selectedCell.nextCell(AC, false));
-    } else if (direction === RIGHT) {
-      doHighlight(props.selectedCell.nextCell(AC, true));
-    }
   }
 
   let highlightedCells = [];
@@ -288,18 +128,14 @@ export function Grid(props) {
               y={j * cellHeight}
               key={i + props.h * j}
               number={number}
+              contents={props.filledCells[`${i},${j}`]}
               highlight={highlight}
               selected={
                 props.selectedCell !== null &&
                 i === props.selectedCell.x &&
                 j === props.selectedCell.y
               }
-              onClick={(e) => doHighlight(new Coord(i, j))}
-              selectNextCell={props.selectNextCell}
-              selectNextClue={props.selectNextClue}
-              moveCell={moveCell}
-              contents={props.filledCells[`${i},${j}`]}
-              setContents={(letter) => fillCell(i, j, letter)}
+              onClick={() => props.doHighlight(new Coord(i, j))}
             />
           );
         }

@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/layout";
-import SEO from "../components/seo";
-import { Crossword } from "../components/xwd";
-import {
-  AC,
-  ClueDetails,
-  ClueSeq,
-  Coord,
-  DN,
-  figureOutClues,
-  getWhiteCells,
-} from "../components/xwd_utils";
+import { ClueBox, CurrentClue, Grid } from "../components/xwd";
+import { AC, ClueDetails, DN, figureOutClues } from "../components/xwd_utils";
+import { ClueSeq, Coord, cellInClue, getWhiteCells } from "./utils";
 import { Keyboard, KeyboardButton } from "../components/keyboard";
 import { useCookies } from "react-cookie";
 
@@ -102,9 +94,61 @@ const CrosswordPage = (props: {
       }
     }
   }
+  function cellIsBlack(cell: Coord): boolean {
+    for (let i = 0; i < blackCells.length; i++) {
+      const blackCell = blackCells[i];
+      if (cell.x === blackCell.x && cell.y === blackCell.y) {
+        return true;
+      }
+    }
+    return false;
+  }
+  function doHighlight(justClicked: Coord): void {
+    if (
+      justClicked.x < 0 ||
+      justClicked.x >= props.acrossSize ||
+      justClicked.y < 0 ||
+      justClicked.y >= props.downSize
+    ) {
+      return;
+    }
+    if (cellIsBlack(justClicked)) {
+      return;
+    }
+    setSelectedCell(justClicked);
+    let matched = false;
+    for (const cell of whiteCells) {
+      if (justClicked.equals(cell)) {
+        matched = true;
+      }
+    }
+    if (!matched) {
+      return;
+    }
+    let acHighlighted: ClueSeq | null = null;
+    let dnHighlighted: ClueSeq | null = null;
+    for (let value of Object.values(clues[AC])) {
+      if (cellInClue(value, justClicked)) {
+        acHighlighted = value;
+        // If this clue is the highlighted one already carry on.
+        if (!selectedClueSeq || !selectedClueSeq.equals(acHighlighted)) {
+          setSelectedClueSeq(acHighlighted);
+          return;
+        } else {
+          break;
+        }
+      }
+    }
+    for (let value of Object.values(clues[DN])) {
+      if (cellInClue(value, justClicked)) {
+        dnHighlighted = value;
+        setSelectedClueSeq(dnHighlighted);
+        return;
+      }
+    }
+  }
 
   const keyPressed = (letter: string) => {
-    console.log(`pressed ${letter}`);
     const backspace = letter === "\u232B" || letter === "Backspace";
     if (letter.match(/^[a-z]$/i) || backspace) {
       console.log(`selne ${backspace}`);
@@ -125,7 +169,16 @@ const CrosswordPage = (props: {
       selectNextCell(nextForward);
     } else if (letter === "Tab") {
       selectNextClue();
-    } else if ((letter = "ArrowRight")) {
+    } else if (selectedCell) {
+      if (letter === "ArrowRight") {
+        doHighlight(selectedCell.nextCell(AC, true));
+      } else if (letter === "ArrowLeft") {
+        doHighlight(selectedCell.nextCell(AC, false));
+      } else if (letter === "ArrowUp") {
+        doHighlight(selectedCell.nextCell(DN, false));
+      } else if (letter === "ArrowDown") {
+        doHighlight(selectedCell.nextCell(DN, true));
+      }
     }
   };
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -137,6 +190,11 @@ const CrosswordPage = (props: {
     event.preventDefault();
     event.stopPropagation();
   };
+  function clueClicked(num, dir) {
+    const clickedClue = clues[dir][num];
+    setSelectedClueSeq(clickedClue);
+    setSelectedCell(new Coord(clickedClue.x, clickedClue.y));
+  }
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("keyup", handleKeyUp);
@@ -166,28 +224,46 @@ const CrosswordPage = (props: {
   return (
     <>
       <Layout>
-        <SEO title="Crosswords" keywords={[`gatsby`, `application`, `react`]} />
-        <Crossword
-          title={props.title}
-          preamble={props.preamble}
+        <h2>{props.title}</h2>
+        <p>{props.preamble}</p>
+        <CurrentClue
+          clue={selectedClue}
           year={props.year}
           month={props.month}
-          blackCells={blackCells}
-          whiteCells={whiteCells}
-          cells={cells}
-          h={props.acrossSize}
-          v={props.downSize}
-          clueSeqs={clueSeqs}
-          clues={clues}
-          selectedCell={selectedCell}
-          setSelectedCell={setSelectedCell}
+        ></CurrentClue>
+        <div style={{ margin: "5px" }} id="xwd-container">
+          <Grid
+            blackCells={blackCells}
+            whiteCells={whiteCells}
+            cells={cells}
+            h={props.acrossSize}
+            v={props.downSize}
+            clues={clues}
+            selectedClue={selectedClueSeq}
+            setSelectedClue={setSelectedClueSeq}
+            selectedCell={selectedCell}
+            setSelectedCell={setSelectedCell}
+            filledCells={filledCells}
+            setFilledCells={setFilledCells}
+            selectNextCell={selectNextCell}
+            doHighlight={doHighlight}
+          ></Grid>
+        </div>
+        <ClueBox
+          direction={AC}
+          clues={clueSeqs[AC]}
+          onClick={clueClicked}
           selectedClue={selectedClue}
-          setSelectedClue={setSelectedClue}
-          selectedClueSeq={selectedClueSeq}
-          setSelectedClueSeq={setSelectedClueSeq}
-          filledCells={filledCells}
-          setFilledCells={setFilledCells}
-          selectNextCell={selectNextCell}
+          year={props.year}
+          month={props.month}
+        />
+        <ClueBox
+          direction={DN}
+          clues={clueSeqs[DN]}
+          onClick={clueClicked}
+          selectedClue={selectedClue}
+          year={props.year}
+          month={props.month}
         />
       </Layout>
       {showKeyboard && (
