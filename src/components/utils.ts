@@ -1,20 +1,24 @@
 export const AC = "ac";
 export const DN = "dn";
+export type Direction = typeof AC | typeof DN;
 export const UP = "up";
 export const DOWN = "down";
 export const LEFT = "left";
 export const RIGHT = "right";
-export const DIRNAME = { ac: "Across", dn: "Down" };
+export const DIRNAME = { [AC]: "Across", [DN]: "Down" };
 
 export class Coord {
-  constructor(x, y) {
+  x: number;
+  y: number;
+
+  constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
   }
-  equals(other) {
+  equals(other: Coord | null): boolean {
     return other !== null && this.x === other.x && this.y === other.y;
   }
-  nextCell(direction, forwards = true) {
+  nextCell(direction: string, forwards = true): Coord {
     const increment = forwards ? 1 : -1;
     if (direction === AC) {
       return new Coord(this.x + increment, this.y);
@@ -22,19 +26,23 @@ export class Coord {
       return new Coord(this.x, this.y + increment);
     }
   }
-  str() {
+  str(): string {
     return `${this.x},${this.y}`;
   }
 }
 
 export class ClueSeq {
-  constructor(x, y, length, direction) {
+  x: number;
+  y: number;
+  length: number;
+  direction: Direction;
+  constructor(x: number, y: number, length: number, direction: Direction) {
     this.x = x;
     this.y = y;
     this.length = length;
     this.direction = direction;
   }
-  equals(other) {
+  equals(other: ClueSeq): boolean {
     return (
       other !== null &&
       this.x === other.x &&
@@ -46,7 +54,18 @@ export class ClueSeq {
 }
 
 export class ClueDetails {
-  constructor(num, direction, clue, letters, releaseDay) {
+  num: string;
+  direction: string;
+  clue: ClueSeq;
+  letters: number;
+  releaseDay: number;
+  constructor(
+    num: string,
+    direction: string,
+    clue: ClueSeq,
+    letters: number,
+    releaseDay: number
+  ) {
     this.num = num;
     this.direction = direction;
     this.clue = clue;
@@ -61,8 +80,7 @@ export class ClueDetails {
     );
   }
 }
-
-export function cellInArray(array, cell) {
+export function cellInArray(array: Array<Coord>, cell: Coord): boolean {
   for (var k = 0; k < array.length; k++) {
     const { x, y } = array[k];
     if (x === cell.x && y === cell.y) {
@@ -72,7 +90,7 @@ export function cellInArray(array, cell) {
   return false;
 }
 
-export function cellInClue(clue, cell) {
+export function cellInClue(clue: ClueSeq, cell: Coord): boolean {
   if (clue.direction === AC) {
     for (var i = clue.x; i < clue.x + clue.length; i++) {
       if (cell.x === i && cell.y === clue.y) {
@@ -90,9 +108,9 @@ export function cellInClue(clue, cell) {
   return false;
 }
 
-export function getWhiteCells(h, v, blackCells) {
-  const cells = [];
-  const whiteCells = [];
+export function getWhiteCells(h: number, v: number, blackCells: Array<Coord>) {
+  const cells: Array<any> = [];
+  const whiteCells: Array<Coord> = [];
   /* Make array of white cells. */
   for (let i = 0; i < h; i++) {
     for (let j = 0; j < v; j++) {
@@ -112,10 +130,20 @@ export function getWhiteCells(h, v, blackCells) {
   return [whiteCells, cells];
 }
 
-export function figureOutClues(acSquares, dnSquares, whiteSquares) {
+export type ClueMap = { [key: string]: ClueSeq };
+export type AllClues = {
+  [AC]: ClueMap;
+  [DN]: ClueMap;
+};
+
+export function figureOutClues(
+  acSquares: number,
+  dnSquares: number,
+  whiteSquares
+): AllClues {
   /* Collect clues and write in numbers */
-  var acrossClues = {};
-  var downClues = {};
+  var acrossClues: ClueMap = {};
+  var downClues: ClueMap = {};
   var clueNumber = 1;
   /* loop from right to left then top to bottom */
   for (var j = 0; j < dnSquares; j++) {
@@ -159,7 +187,7 @@ export function figureOutClues(acSquares, dnSquares, whiteSquares) {
     }
   }
   return {
-    ac: acrossClues,
-    dn: downClues,
+    [AC]: acrossClues,
+    [DN]: downClues,
   };
 }

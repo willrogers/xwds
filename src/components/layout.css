@@ -3,6 +3,13 @@
 
    Any css specific for this sub-site will go in this file. */
 
+:root {
+  --unreleased-color: lightgrey;
+  --today-color: #ffd6cc;
+  --selected-color: cyan;
+  --highlight-color: #d6f0ff;
+}
+
 .xwd-container {
   display: flex;
   flex-direction: row;
@@ -32,12 +39,6 @@
 .white-cell:first-line {
   display: inline-block;
 }
-.white-cell:active {
-  background-color: red;
-}
-.white-cell:focus {
-  background-color: red;
-}
 
 .clue-number {
   font-size: 11px;
@@ -50,9 +51,13 @@
 }
 
 .today {
-  background-color: #ffd6cc;
+  background-color: var(--today-color);
 }
 
 .selected {
-  background-color: lightblue;
+  background-color: var(--selected-color);
+}
+
+.highlighted {
+  background-color: var(--highlight-color);
 }

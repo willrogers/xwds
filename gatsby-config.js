@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `Crosswords`,
-    description: `A subsite for rendering crosswords using Gatsby.`,
+    description: `Some crosswords for https://wllrg.rs`,
     author: `@willrogers`,
     parentUrl: `https://wllrg.rs`,
   },
