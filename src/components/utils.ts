@@ -108,8 +108,12 @@ export function cellInClue(clue: ClueSeq, cell: Coord): boolean {
   return false;
 }
 
-export function getWhiteCells(h: number, v: number, blackCells: Array<Coord>) {
-  const cells: Array<any> = [];
+export function getWhiteCells(
+  h: number,
+  v: number,
+  blackCells: Array<Coord>
+): [Array<Coord>, Array<[number, number, boolean]>] {
+  const cells: Array<[number, number, boolean]> = [];
   const whiteCells: Array<Coord> = [];
   /* Make array of white cells. */
   for (let i = 0; i < h; i++) {

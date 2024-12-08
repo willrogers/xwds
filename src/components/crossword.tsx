@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/layout";
-import { ClueBox, CurrentClue, Grid } from "../components/xwd";
+import { ClueBox, CurrentClue } from "../components/xwd";
 import {
   AC,
   AllClues,
@@ -14,6 +14,7 @@ import {
 } from "./utils";
 import { Keyboard, KeyboardButton } from "../components/keyboard";
 import { useCookies } from "react-cookie";
+import { Grid } from "./grid";
 
 const CrosswordPage = (props: {
   title: string;
@@ -30,7 +31,7 @@ const CrosswordPage = (props: {
   const [selectedCell, setSelectedCell] = useState<Coord | null>(null);
   const [selectedClueSeq, setSelectedClueSeq] = useState<ClueSeq | null>(null);
   const [selectedClue, setSelectedClue] = useState<ClueDetails | null>(null);
-  const [filledCells, setFilledCells] = useState<Record<string, string>>(
+  const [filledCells, setFilledCells] = useState<{ [key: string]: string }>(
     cookie.cells || {}
   );
   const clueArrays: {
@@ -87,23 +88,18 @@ const CrosswordPage = (props: {
 
   function selectNextClue(): void {
     if (selectedClueSeq !== null) {
-      console.log("select next clue");
       const dirClues = Object.values<ClueSeq>(clues[selectedClueSeq.direction]);
       const otherDirection = selectedClueSeq.direction === AC ? DN : AC;
       const otherDirClues = Object.values<ClueSeq>(clues[otherDirection]);
 
       for (let i = 0; i < dirClues.length; i++) {
-        console.log("sel");
         console.log(selectedClue);
-        console.log("iter");
         console.log(dirClues[i]);
         if (selectedClueSeq.equals(dirClues[i])) {
           let newClue;
           if (i !== dirClues.length - 1) {
-            console.log("setting 1");
             newClue = dirClues[i + 1];
           } else {
-            console.log("setting 2");
             newClue = otherDirClues[0];
           }
           setSelectedClueSeq(newClue);
@@ -137,8 +133,8 @@ const CrosswordPage = (props: {
     }
     setSelectedCell(cell);
     let matched = false;
-    for (const cell of whiteCells) {
-      if (cell.equals(cell)) {
+    for (const whiteCell of whiteCells) {
+      if (cell.equals(whiteCell)) {
         matched = true;
       }
     }
@@ -280,19 +276,13 @@ const CrosswordPage = (props: {
         ></CurrentClue>
         <div style={{ margin: "5px" }} id="xwd-container">
           <Grid
-            blackCells={blackCells}
-            whiteCells={whiteCells}
             cells={cells}
             h={props.acrossSize}
             v={props.downSize}
             clues={clues}
             selectedClue={selectedClueSeq}
-            setSelectedClue={setSelectedClueSeq}
             selectedCell={selectedCell}
-            setSelectedCell={setSelectedCell}
             filledCells={filledCells}
-            setFilledCells={setFilledCells}
-            selectNextCell={selectNextCell}
             doHighlight={doHighlight}
           ></Grid>
         </div>
