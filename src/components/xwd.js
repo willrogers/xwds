@@ -47,19 +47,8 @@ export function CurrentClue(props) {
 }
 
 export function Grid(props) {
-  console.log(props.clues);
-  console.log(props.clues[AC]);
-  console.log(props.clues[DN]);
   const cellHeight = 28;
   const cellWidth = 28;
-
-  function fillCell(i, j, contents) {
-    const newFilledCells = {
-      ...props.filledCells,
-    };
-    newFilledCells[`${i},${j}`] = contents;
-    props.setFilledCells(newFilledCells);
-  }
 
   const clueCells = {};
   for (let [key, value] of Object.entries(props.clues[AC])) {
@@ -174,7 +163,7 @@ export function ClueBox(props) {
 
         const now = new Date();
         const releaseDate = new Date(props.year, props.month, releaseDay);
-        const today = now.getDay() === releaseDay - 1;
+        const today = now.getDate() === releaseDay;
         const text =
           now > releaseDate ? clueText : `Released on December ${releaseDay}.`;
         function onClick() {
