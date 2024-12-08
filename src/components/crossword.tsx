@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/layout";
-import { ClueBox, CurrentClue } from "../components/xwd";
 import {
   AC,
   AllClues,
@@ -15,6 +14,7 @@ import {
 import { Keyboard, KeyboardButton } from "../components/keyboard";
 import { useCookies } from "react-cookie";
 import { Grid } from "./grid";
+import { ClueBox, CurrentClue } from "./clues";
 
 const CrosswordPage = (props: {
   title: string;
@@ -35,8 +35,8 @@ const CrosswordPage = (props: {
     cookie.cells || {}
   );
   const clueArrays: {
-    [AC]: { [key: number]: Array<[string, number, number]> };
-    [DN]: { [key: number]: Array<[string, number, number]> };
+    [AC]: { [key: number]: [string, number, number] };
+    [DN]: { [key: number]: [string, number, number] };
   } = { [AC]: {}, [DN]: {} };
   props.rawClues[AC].forEach((element) => {
     clueArrays[AC][element.number] = [

@@ -55,13 +55,13 @@ export class ClueSeq {
 
 export class ClueDetails {
   num: string;
-  direction: string;
+  direction: Direction;
   clue: ClueSeq;
   letters: number;
   releaseDay: number;
   constructor(
     num: string,
-    direction: string,
+    direction: Direction,
     clue: ClueSeq,
     letters: number,
     releaseDay: number
