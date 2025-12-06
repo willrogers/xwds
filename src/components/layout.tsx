@@ -12,15 +12,7 @@ const Layout = ({ children }: LayoutProps): JSX.Element => {
   return (
     <>
       <Head>
-        <link
-          type="text/css"
-          rel="stylesheet"
-          href="https://wllrg.rs/css/style.css"
-        />
-        <link
-          href="https://fonts.googleapis.com/css?family=Mukta+Mahee%7CRaleway"
-          rel="stylesheet"
-        />
+        {/* External stylesheets moved to _document.tsx */}
       </Head>
       <Header parentUrl="https://wllrg.rs" />
       <div
