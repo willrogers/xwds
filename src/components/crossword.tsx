@@ -7,6 +7,7 @@ import {
   ClueSeq,
   Coord,
   DN,
+  Direction,
   cellInClue,
   figureOutClues,
   getWhiteCells,
@@ -26,26 +27,26 @@ const CrosswordPage = (props: {
   blackSquares: any;
   rawClues: any;
 }): JSX.Element => {
-  const [cookie, setCookie, removeCookie] = useCookies();
+  const [cookie, setCookie] = useCookies();
   const [showKeyboard, setShowKeyboard] = useState<boolean>(false);
   const [selectedCell, setSelectedCell] = useState<Coord | null>(null);
   const [selectedClueSeq, setSelectedClueSeq] = useState<ClueSeq | null>(null);
   const [selectedClue, setSelectedClue] = useState<ClueDetails | null>(null);
   const [filledCells, setFilledCells] = useState<{ [key: string]: string }>(
-    cookie.cells || {}
+    cookie.cells || {},
   );
   const clueArrays: {
     [AC]: { [key: number]: [string, number, number] };
     [DN]: { [key: number]: [string, number, number] };
   } = { [AC]: {}, [DN]: {} };
-  props.rawClues[AC].forEach((element) => {
+  (props.rawClues[AC] || []).forEach((element: any) => {
     clueArrays[AC][element.number] = [
       element.clue,
       element.length,
       element.date,
     ];
   });
-  props.rawClues.dn.forEach((element) => {
+  (props.rawClues.dn || []).forEach((element: any) => {
     clueArrays[DN][element.number] = [
       element.clue,
       element.length,
@@ -53,16 +54,18 @@ const CrosswordPage = (props: {
     ];
   });
 
-  const blackCells = props.blackSquares.map(([x, y]) => new Coord(x, y));
+  const blackCells = (props.blackSquares || []).map(
+    ([x, y]: [number, number]) => new Coord(x, y),
+  );
   const [whiteCells, cells] = getWhiteCells(
     props.acrossSize,
     props.downSize,
-    blackCells
+    blackCells,
   );
   const clues: AllClues = figureOutClues(
     props.acrossSize,
     props.downSize,
-    whiteCells
+    whiteCells,
   );
   function selectNextCell(forwards = true) {
     console.log(`selected cell ${selectedCell}`);
@@ -154,7 +157,7 @@ const CrosswordPage = (props: {
     }
     let acHighlighted: ClueSeq | null = null;
     let dnHighlighted: ClueSeq | null = null;
-    for (let value of Object.values<ClueSeq>(clues[AC])) {
+    for (const value of Object.values<ClueSeq>(clues[AC])) {
       if (cellInClue(value, cell)) {
         acHighlighted = value;
         // If this clue is the highlighted one already carry on.
@@ -166,7 +169,7 @@ const CrosswordPage = (props: {
         }
       }
     }
-    for (let value of Object.values<ClueSeq>(clues[DN])) {
+    for (const value of Object.values<ClueSeq>(clues[DN])) {
       if (cellInClue(value, cell)) {
         dnHighlighted = value;
         setSelectedClueSeq(dnHighlighted);
@@ -233,7 +236,7 @@ const CrosswordPage = (props: {
     event.preventDefault();
     event.stopPropagation();
   };
-  function clueClicked(num, dir) {
+  function clueClicked(num: string, dir: Direction) {
     const clickedClue = clues[dir][num];
     setSelectedClueSeq(clickedClue);
     setSelectedCell(new Coord(clickedClue.x, clickedClue.y));
@@ -248,15 +251,15 @@ const CrosswordPage = (props: {
   });
   if (selectedClueSeq != null) {
     for (const [num, clueSeq] of Object.entries<ClueSeq>(
-      clues[selectedClueSeq.direction]
+      clues[selectedClueSeq.direction],
     )) {
-      const [clue, letters, date] = clueArrays[clueSeq.direction][num];
+      const [, letters, date] = clueArrays[clueSeq.direction][parseInt(num)];
       const clueDets = new ClueDetails(
         num,
         clueSeq.direction,
-        clue,
+        clueSeq,
         letters,
-        date
+        date,
       );
       if (clueSeq.equals(selectedClueSeq) && !clueDets.equals(selectedClue)) {
         setSelectedClue(clueDets);

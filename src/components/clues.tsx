@@ -1,7 +1,13 @@
 import React from "react";
-import { AC, AllClues, ClueDetails, Direction, DIRNAME, DN } from "./utils";
+import { ClueDetails, Direction, DIRNAME } from "./utils";
 
-export function CurrentClue(props) {
+interface CurrentClueProps {
+  clue: ClueDetails | null;
+  year: number;
+  month: number;
+}
+
+export function CurrentClue(props: CurrentClueProps) {
   let id = "";
   let text = "No clue selected.";
   if (props.clue !== null) {
@@ -23,13 +29,7 @@ export function CurrentClue(props) {
         backgroundColor: "lightblue",
       }}
     >
-      <div
-        style={{
-          textWrap: "nowrap",
-          fontWeight: "bold",
-          margin: "5px",
-        }}
-      >
+      <div style={{ textWrap: "nowrap", fontWeight: "bold", margin: "5px" }}>
         {id}
       </div>
       <div
@@ -53,7 +53,7 @@ export function ClueBox(props: {
   year: number;
   month: number;
 }) {
-  function clueBoxOnClick(number) {
+  function clueBoxOnClick(number: string) {
     props.onClick(number, props.direction);
   }
   let num: string | null = null;
@@ -104,7 +104,16 @@ export function ClueBox(props: {
   );
 }
 
-export function Clue(props) {
+interface ClueProps {
+  number: string;
+  clue: string;
+  len: number | number[];
+  onClick: () => void;
+  selected: boolean;
+  today: boolean;
+}
+
+export function Clue(props: ClueProps) {
   let classNames = "clue";
   if (props.today) {
     classNames = `${classNames} today`;
@@ -114,7 +123,8 @@ export function Clue(props) {
   }
   return (
     <div className={classNames} onClick={props.onClick}>
-      {props.number}. {props.clue} ({props.len.join(",")})
+      {props.number}. {props.clue} (
+      {Array.isArray(props.len) ? props.len.join(",") : props.len})
     </div>
   );
 }

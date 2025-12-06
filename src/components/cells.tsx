@@ -30,7 +30,7 @@ export function EmptyCell(props: {
   highlight: boolean;
   onClick: () => void;
 }) {
-  let backgroundColor = props.selected
+  const backgroundColor = props.selected
     ? "cyan"
     : props.highlight
       ? "lightblue"

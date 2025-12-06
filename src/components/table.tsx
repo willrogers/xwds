@@ -1,13 +1,13 @@
 import React from "react";
-import { StaticQuery, graphql } from "gatsby";
+import { BasicsData } from "../lib/data";
 
-function getTableRows(data) {
-  const tableRows = [];
-  data.allBasicsJson.edges.forEach((word) => {
-    word.node.values.forEach((value) => {
+function getTableRows(data: BasicsData[]): JSX.Element[] {
+  const tableRows: JSX.Element[] = [];
+  data.forEach((word, wordIndex) => {
+    word.values.forEach((value, valueIndex) => {
       tableRows.push(
-        <tr>
-          <td>{word.node.definition}</td>
+        <tr key={`${wordIndex}-${valueIndex}`}>
+          <td>{word.definition}</td>
           <td>{value[0]}</td>
           <td>{value[1]}</td>
         </tr>
@@ -17,34 +17,22 @@ function getTableRows(data) {
   return tableRows;
 }
 
-const Table = (): JSX.Element => {
+interface Props {
+  basicsData: BasicsData[];
+}
+
+const Table = ({ basicsData }: Props): JSX.Element => {
   return (
-    <StaticQuery
-      query={graphql`
-        query BasicsQuery {
-          allBasicsJson {
-            edges {
-              node {
-                definition
-                values
-              }
-            }
-          }
-        }
-      `}
-      render={(data) => (
-        <table>
-          <thead>
-            <tr>
-              <th>Definition</th>
-              <th>Value</th>
-              <th>Comments</th>
-            </tr>
-          </thead>
-          <tbody>{getTableRows(data)}</tbody>
-        </table>
-      )}
-    />
+    <table>
+      <thead>
+        <tr>
+          <th>Definition</th>
+          <th>Value</th>
+          <th>Comments</th>
+        </tr>
+      </thead>
+      <tbody>{getTableRows(basicsData)}</tbody>
+    </table>
   );
 };
 export default Table;

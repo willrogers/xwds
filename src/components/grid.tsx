@@ -19,14 +19,14 @@ export function Grid(props: {
     [];
 
   const clueCells: { [key: number]: Coord } = {};
-  for (let [key, value] of Object.entries(props.clues[AC])) {
-    clueCells[key] = new Coord(value.x, value.y);
+  for (const [key, value] of Object.entries(props.clues[AC])) {
+    clueCells[parseInt(key)] = new Coord(value.x, value.y);
   }
-  for (let [key, value] of Object.entries(props.clues[DN])) {
-    clueCells[key] = new Coord(value.x, value.y);
+  for (const [key, value] of Object.entries(props.clues[DN])) {
+    clueCells[parseInt(key)] = new Coord(value.x, value.y);
   }
 
-  let highlightedCells: Array<Coord> = [];
+  const highlightedCells: Array<Coord> = [];
   if (props.selectedClue != null) {
     const { x, y, length, direction } = props.selectedClue;
     if (direction == AC) {
@@ -43,7 +43,7 @@ export function Grid(props: {
   for (let k = 0; k < props.cells.length; k++) {
     const [x, y, blackCell] = props.cells[k];
     let number: string | null = null;
-    for (let [key, value] of Object.entries(clueCells)) {
+    for (const [key, value] of Object.entries(clueCells)) {
       if (value.x === x && value.y === y) {
         number = key;
       }

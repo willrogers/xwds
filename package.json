@@ -7,38 +7,37 @@
   "dependencies": {
     "eslint": "^9.15.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "gatsby": "^5.14.0",
-    "gatsby-plugin-image": "^3.14.0",
-    "gatsby-plugin-manifest": "^5.14.0",
-    "gatsby-plugin-offline": "^6.14.0",
-    "gatsby-plugin-react-helmet": "^6.14.0",
-    "gatsby-plugin-sharp": "^5.14.0",
-    "gatsby-source-filesystem": "^5.14.0",
-    "gatsby-transformer-json": "^5.14.0",
-    "gatsby-transformer-sharp": "^5.14.0",
-    "prop-types": "^15.7.2",
-    "react-cookie": "^7.2.2"
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-cookie": "^7.2.2",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/react-helmet": "^6.1.11",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
     "@typescript-eslint/eslint-plugin": "^8.15.0",
     "@typescript-eslint/parser": "^8.15.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.0.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
-    "gh-pages": "^6.2.0"
+    "gh-pages": "^6.2.0",
+    "prettier": "^3.7.4",
+    "typescript": "^5.0.0"
   },
   "keywords": [
     "gatsby"
   ],
   "license": "MIT",
   "scripts": {
-    "build": "gatsby build",
-    "develop": "gatsby develop -H 0.0.0.0",
-    "start": "npm run develop",
-    "serve": "gatsby serve",
+    "build": "next build",
+    "dev": "next dev -H 0.0.0.0",
+    "start": "next start",
+    "export": "next export",
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\"",
-    "deploy": "gatsby build --prefix-paths && gh-pages -d public",
+    "deploy": "next build && next export && gh-pages -d out",
     "lint": "eslint . --ext ts --ext tsx",
     "type-check": "tsc --pretty --noEmit"
   },
@@ -48,5 +47,10 @@
   },
   "bugs": {
     "url": "https://github.com/gatsbyjs/gatsby/issues"
+  },
+  "overrides": {
+    "react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825": {
+      "react": "^18.0.0"
+    }
   }
 }
