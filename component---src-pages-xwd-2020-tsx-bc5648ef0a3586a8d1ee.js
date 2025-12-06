@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkxwds=self.webpackChunkxwds||[]).push([[841],{9406:function(e,s,a){a.r(s);var r=a(6540),t=a(4794),l=a(2754);s.default=()=>{const e=(0,t.useStaticQuery)("2631139263").allXwd2020Json.edges[0].node,s=e.title,a=e.preamble,u=e.across_size,c=e.down_size,n=e.black_squares,i=e.clues;return r.createElement(l.A,{title:s,preamble:a,year:2020,month:11,acrossSize:u,downSize:c,blackSquares:n,rawClues:i})}}}]);
-//# sourceMappingURL=component---src-pages-xwd-2020-tsx-bc5648ef0a3586a8d1ee.js.map

@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkxwds=self.webpackChunkxwds||[]).push([[997],{8610:function(e,s,a){a.r(s);var r=a(6540),t=a(4794),l=a(7956);s.default=()=>{const e=(0,t.useStaticQuery)("542524241").allXwd2024Json.edges[0].node,s=e.title,a=e.preamble,u=e.across_size,c=e.down_size,n=e.black_squares,i=e.clues;return r.createElement(l.A,{title:s,preamble:a,year:2024,month:11,acrossSize:u,downSize:c,blackSquares:n,rawClues:i})}}}]);
-//# sourceMappingURL=component---src-pages-xwd-2024-tsx-5c31a3eed1026a74abb7.js.map
