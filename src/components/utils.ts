@@ -55,28 +55,18 @@ export class ClueSeq {
 
 export class ClueDetails {
   num: string;
-  direction: Direction;
   clue: ClueSeq;
-  letters: number;
   releaseDay: number;
-  constructor(
-    num: string,
-    direction: Direction,
-    clue: ClueSeq,
-    letters: number,
-    releaseDay: number,
-  ) {
+  constructor(num: string, clue: ClueSeq, releaseDay: number) {
     this.num = num;
-    this.direction = direction;
     this.clue = clue;
-    this.letters = letters;
     this.releaseDay = releaseDay;
   }
   equals(other: ClueDetails | null): boolean {
     return (
       other !== null &&
       this.num === other.num &&
-      this.direction === other.direction
+      this.clue.direction === other.clue.direction
     );
   }
 }

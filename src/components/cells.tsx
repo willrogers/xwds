@@ -25,7 +25,7 @@ export function EmptyCell(props: {
   x: number;
   y: number;
   number: string;
-  contents: string;
+  contents: string | undefined;
   selected: boolean;
   highlight: boolean;
   onClick: () => void;

@@ -32,9 +32,14 @@ const CrosswordPage = (props: {
   const [selectedCell, setSelectedCell] = useState<Coord | null>(null);
   const [selectedClueSeq, setSelectedClueSeq] = useState<ClueSeq | null>(null);
   const [selectedClue, setSelectedClue] = useState<ClueDetails | null>(null);
-  const [filledCells, setFilledCells] = useState<{ [key: string]: string }>(
-    cookie.cells || {},
-  );
+  const [filledCells, setFilledCells] = useState<{ [key: string]: string }>({});
+
+  // Load cookies after hydration to prevent SSR mismatch
+  useEffect(() => {
+    if (cookie.cells) {
+      setFilledCells(cookie.cells);
+    }
+  }, [cookie.cells]);
   const clueArrays: {
     [AC]: { [key: number]: [string, number, number] };
     [DN]: { [key: number]: [string, number, number] };
@@ -254,17 +259,18 @@ const CrosswordPage = (props: {
       clues[selectedClueSeq.direction],
     )) {
       const [, letters, date] = clueArrays[clueSeq.direction][parseInt(num)];
-      const clueDets = new ClueDetails(
-        num,
-        clueSeq.direction,
-        clueSeq,
-        letters,
-        date,
-      );
+      const clueDets = new ClueDetails(num, clueSeq, date);
       if (clueSeq.equals(selectedClueSeq) && !clueDets.equals(selectedClue)) {
         setSelectedClue(clueDets);
       }
     }
+  }
+
+  let clueText;
+  if (selectedClue) {
+    clueText = props.rawClues[
+      selectedClue.clue.direction === AC ? "ac" : "dn"
+    ].find((clue: any) => clue.number === selectedClue.num)?.clue;
   }
 
   return (
@@ -274,6 +280,7 @@ const CrosswordPage = (props: {
         <p>{props.preamble}</p>
         <CurrentClue
           clue={selectedClue}
+          clueText={clueText}
           year={props.year}
           month={props.month}
         ></CurrentClue>
@@ -312,7 +319,11 @@ const CrosswordPage = (props: {
           hideKeyboardPressed={() => setShowKeyboard(false)}
         />
       )}
-      <KeyboardButton keyboardPressed={() => setShowKeyboard(!showKeyboard)} />
+      {!showKeyboard && (
+        <KeyboardButton
+          keyboardPressed={() => setShowKeyboard(!showKeyboard)}
+        />
+      )}
     </>
   );
 };

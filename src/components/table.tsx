@@ -10,7 +10,7 @@ function getTableRows(data: BasicsData[]): JSX.Element[] {
           <td>{word.definition}</td>
           <td>{value[0]}</td>
           <td>{value[1]}</td>
-        </tr>
+        </tr>,
       );
     });
   });
