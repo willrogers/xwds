@@ -26,7 +26,7 @@ const CrosswordPage = (props: {
   downSize: number;
   blackSquares: any;
   rawClues: any;
-}): JSX.Element => {
+}) => {
   const [cookie, setCookie] = useCookies();
   const [showKeyboard, setShowKeyboard] = useState<boolean>(false);
   const [selectedCell, setSelectedCell] = useState<Coord | null>(null);
@@ -60,17 +60,17 @@ const CrosswordPage = (props: {
   });
 
   const blackCells = (props.blackSquares || []).map(
-    ([x, y]: [number, number]) => new Coord(x, y),
+    ([x, y]: [number, number]) => new Coord(x, y)
   );
   const [whiteCells, cells] = getWhiteCells(
     props.acrossSize,
     props.downSize,
-    blackCells,
+    blackCells
   );
   const clues: AllClues = figureOutClues(
     props.acrossSize,
     props.downSize,
-    whiteCells,
+    whiteCells
   );
   function selectNextCell(forwards = true) {
     console.log(`selected cell ${selectedCell}`);
@@ -256,7 +256,7 @@ const CrosswordPage = (props: {
   });
   if (selectedClueSeq != null) {
     for (const [num, clueSeq] of Object.entries<ClueSeq>(
-      clues[selectedClueSeq.direction],
+      clues[selectedClueSeq.direction]
     )) {
       const [, letters, date] = clueArrays[clueSeq.direction][parseInt(num)];
       const clueDets = new ClueDetails(num, clueSeq, date);

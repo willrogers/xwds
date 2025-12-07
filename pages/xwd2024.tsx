@@ -9,7 +9,7 @@ interface Props {
   xwdData: XwdData;
 }
 
-const Crossword2024 = ({ xwdData }: Props): JSX.Element => {
+const Crossword2024 = ({ xwdData }: Props) => {
   return (
     <>
       <Head>

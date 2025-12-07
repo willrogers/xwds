@@ -5,6 +5,7 @@ const nextConfig = {
   basePath: "/xwds",
   assetPrefix: "/xwds",
   output: "export",
+  distDir: "out",
   images: {
     unoptimized: true,
   },

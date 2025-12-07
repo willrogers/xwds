@@ -1,8 +1,8 @@
 import React from "react";
 import { BasicsData } from "../lib/data";
 
-function getTableRows(data: BasicsData[]): JSX.Element[] {
-  const tableRows: JSX.Element[] = [];
+function getTableRows(data: BasicsData[]): React.ReactElement[] {
+  const tableRows: React.ReactElement[] = [];
   data.forEach((word, wordIndex) => {
     word.values.forEach((value, valueIndex) => {
       tableRows.push(
@@ -10,7 +10,7 @@ function getTableRows(data: BasicsData[]): JSX.Element[] {
           <td>{word.definition}</td>
           <td>{value[0]}</td>
           <td>{value[1]}</td>
-        </tr>,
+        </tr>
       );
     });
   });
@@ -21,7 +21,7 @@ interface Props {
   basicsData: BasicsData[];
 }
 
-const Table = ({ basicsData }: Props): JSX.Element => {
+const Table = ({ basicsData }: Props) => {
   return (
     <table>
       <thead>

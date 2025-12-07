@@ -1,9 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-export const KeyboardButton = (props: {
-  keyboardPressed: () => void;
-}): JSX.Element => {
+export const KeyboardButton = (props: { keyboardPressed: () => void }) => {
   return (
     <div id="keyboard-button" onClick={props.keyboardPressed}>
       <Image alt="keyboard" src="/xwds/keyboard.png" width={32} height={32} />
@@ -41,7 +39,7 @@ export const BackspaceKey = (props: {
 export const Keyboard = (props: {
   hideKeyboardPressed: () => void;
   keyPressed: (letter: string) => void;
-}): JSX.Element => {
+}) => {
   return (
     <div id="keyboard">
       <div className="keyboard-row">

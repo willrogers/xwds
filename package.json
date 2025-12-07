@@ -29,25 +29,24 @@
     "typescript": "^5.9.3"
   },
   "keywords": [
-    "gatsby"
+    "crossword"
   ],
   "license": "MIT",
   "scripts": {
     "build": "next build",
     "dev": "next dev -H 0.0.0.0",
     "start": "next start",
-    "export": "next export",
-    "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\"",
-    "deploy": "next build && next export && gh-pages -d out",
+    "test": "echo \"Write tests!\"",
+    "deploy": "next build && touch out/.nojekyll && gh-pages -d out --dotfiles",
     "lint": "eslint . --ext ts --ext tsx",
     "type-check": "tsc --pretty --noEmit"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+    "url": "https://github.com/willrogers/xwds"
   },
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "url": "https://github.com/willrogers/xwds/issues"
   },
   "overrides": {
     "react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825": {

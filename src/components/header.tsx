@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 /* Copied to match main.html from the main site. */
 
-const Header = (props: { parentUrl: string }): JSX.Element => {
+const Header = (props: { parentUrl: string }) => {
   useEffect(() => {
     /* Add external script. */
     const script = document.createElement("script");

@@ -5,7 +5,7 @@ export function FilledCell(props: {
   v: number;
   x: number;
   y: number;
-}): JSX.Element {
+}) {
   return (
     <div
       style={{

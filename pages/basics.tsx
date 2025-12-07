@@ -10,7 +10,7 @@ interface Props {
   basicsData: BasicsData[];
 }
 
-const BasicsPage = ({ basicsData }: Props): JSX.Element => (
+const BasicsPage = ({ basicsData }: Props) => (
   <>
     <Head>
       <title>Crossword Basics</title>

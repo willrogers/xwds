@@ -1,6 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
-import Head from "next/head";
 
 import Header from "./header";
 
@@ -8,12 +6,10 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-const Layout = ({ children }: LayoutProps): JSX.Element => {
+const Layout = ({ children }: LayoutProps) => {
   return (
     <>
-      <Head>
-        {/* External stylesheets moved to _document.tsx */}
-      </Head>
+      {/* External stylesheets moved to _document.tsx */}
       <Header parentUrl="https://wllrg.rs" />
       <div
         style={{
@@ -28,7 +24,5 @@ const Layout = ({ children }: LayoutProps): JSX.Element => {
     </>
   );
 };
-
-Layout.propTypes = { children: PropTypes.node.isRequired };
 
 export default Layout;
