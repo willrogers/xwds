@@ -1,17 +1,27 @@
 import React from "react";
-import { AC, AllClues, ClueDetails, Direction, DIRNAME, DN } from "./utils";
+import { ClueDetails, Direction, DIRNAME } from "./utils";
 
-export function CurrentClue(props) {
+interface CurrentClueProps {
+  clue: ClueDetails | null;
+  clueText: string;
+  year: number;
+  month: number;
+}
+
+export function CurrentClue(props: CurrentClueProps) {
   let id = "";
   let text = "No clue selected.";
   if (props.clue !== null) {
-    const { num, direction, clue, letters, releaseDay } = props.clue;
-    id = `${num} ${direction}`;
+    const { num, clue, releaseDay } = props.clue;
+    id = `${num} ${clue.direction}`;
     const now = new Date();
     const releaseDate = new Date(props.year, props.month, releaseDay);
     const words =
-      now > releaseDate ? clue : `Released on December ${releaseDay}.`;
-    text = `${words}\u00A0(${letters})`;
+      now > releaseDate
+        ? props.clueText
+        : `Released on December ${releaseDay}.`;
+
+    text = `${words}\u00A0(${clue.length})`;
   }
   return (
     <div
@@ -23,13 +33,7 @@ export function CurrentClue(props) {
         backgroundColor: "lightblue",
       }}
     >
-      <div
-        style={{
-          textWrap: "nowrap",
-          fontWeight: "bold",
-          margin: "5px",
-        }}
-      >
+      <div style={{ whiteSpace: "nowrap", fontWeight: "bold", margin: "5px" }}>
         {id}
       </div>
       <div
@@ -53,14 +57,14 @@ export function ClueBox(props: {
   year: number;
   month: number;
 }) {
-  function clueBoxOnClick(number) {
+  function clueBoxOnClick(number: string) {
     props.onClick(number, props.direction);
   }
   let num: string | null = null;
   let direction: Direction | null = null;
   if (props.selectedClue !== null) {
     num = props.selectedClue.num;
-    direction = props.selectedClue.direction;
+    direction = props.selectedClue.clue.direction;
   }
   return (
     <div
@@ -104,7 +108,16 @@ export function ClueBox(props: {
   );
 }
 
-export function Clue(props) {
+interface ClueProps {
+  number: string;
+  clue: string;
+  len: number | number[];
+  onClick: () => void;
+  selected: boolean;
+  today: boolean;
+}
+
+export function Clue(props: ClueProps) {
   let classNames = "clue";
   if (props.today) {
     classNames = `${classNames} today`;
@@ -114,7 +127,8 @@ export function Clue(props) {
   }
   return (
     <div className={classNames} onClick={props.onClick}>
-      {props.number}. {props.clue} ({props.len.join(",")})
+      {props.number}. {props.clue} (
+      {Array.isArray(props.len) ? props.len.join(",") : props.len})
     </div>
   );
 }

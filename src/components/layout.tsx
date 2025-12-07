@@ -1,36 +1,16 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { graphql, useStaticQuery } from "gatsby";
-import { Helmet } from "react-helmet";
 
 import Header from "./header";
-import "./layout.css";
 
-const Layout = ({ children }): JSX.Element => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-          parentUrl
-        }
-      }
-    }
-  `);
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+const Layout = ({ children }: LayoutProps) => {
   return (
     <>
-      <Helmet>
-        <link
-          type="text/css"
-          rel="stylesheet"
-          href="https://wllrg.rs/css/style.css"
-        />
-        <link
-          href="https://fonts.googleapis.com/css?family=Mukta+Mahee%7CRaleway"
-          rel="stylesheet"
-        />
-      </Helmet>
-      <Header parentUrl={data.site.siteMetadata.parentUrl} />
+      {/* External stylesheets moved to _document.tsx */}
+      <Header parentUrl="https://wllrg.rs" />
       <div
         style={{
           margin: `0 auto`,
@@ -43,10 +23,6 @@ const Layout = ({ children }): JSX.Element => {
       </div>
     </>
   );
-};
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default Layout;

@@ -5,7 +5,7 @@ export function FilledCell(props: {
   v: number;
   x: number;
   y: number;
-}): JSX.Element {
+}) {
   return (
     <div
       style={{
@@ -25,12 +25,12 @@ export function EmptyCell(props: {
   x: number;
   y: number;
   number: string;
-  contents: string;
+  contents: string | undefined;
   selected: boolean;
   highlight: boolean;
   onClick: () => void;
 }) {
-  let backgroundColor = props.selected
+  const backgroundColor = props.selected
     ? "cyan"
     : props.highlight
       ? "lightblue"

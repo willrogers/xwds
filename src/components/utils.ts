@@ -55,33 +55,23 @@ export class ClueSeq {
 
 export class ClueDetails {
   num: string;
-  direction: Direction;
   clue: ClueSeq;
-  letters: number;
   releaseDay: number;
-  constructor(
-    num: string,
-    direction: Direction,
-    clue: ClueSeq,
-    letters: number,
-    releaseDay: number
-  ) {
+  constructor(num: string, clue: ClueSeq, releaseDay: number) {
     this.num = num;
-    this.direction = direction;
     this.clue = clue;
-    this.letters = letters;
     this.releaseDay = releaseDay;
   }
-  equals(other) {
+  equals(other: ClueDetails | null): boolean {
     return (
       other !== null &&
       this.num === other.num &&
-      this.direction === other.direction
+      this.clue.direction === other.clue.direction
     );
   }
 }
 export function cellInArray(array: Array<Coord>, cell: Coord): boolean {
-  for (var k = 0; k < array.length; k++) {
+  for (let k = 0; k < array.length; k++) {
     const { x, y } = array[k];
     if (x === cell.x && y === cell.y) {
       return true;
@@ -92,14 +82,14 @@ export function cellInArray(array: Array<Coord>, cell: Coord): boolean {
 
 export function cellInClue(clue: ClueSeq, cell: Coord): boolean {
   if (clue.direction === AC) {
-    for (var i = clue.x; i < clue.x + clue.length; i++) {
+    for (let i = clue.x; i < clue.x + clue.length; i++) {
       if (cell.x === i && cell.y === clue.y) {
         return true;
       }
     }
   }
   if (clue.direction === DN) {
-    for (var i = clue.y; i < clue.y + clue.length; i++) {
+    for (let i = clue.y; i < clue.y + clue.length; i++) {
       if (cell.x == clue.x && cell.y == i) {
         return true;
       }
@@ -111,7 +101,7 @@ export function cellInClue(clue: ClueSeq, cell: Coord): boolean {
 export function getWhiteCells(
   h: number,
   v: number,
-  blackCells: Array<Coord>
+  blackCells: Array<Coord>,
 ): [Array<Coord>, Array<[number, number, boolean]>] {
   const cells: Array<[number, number, boolean]> = [];
   const whiteCells: Array<Coord> = [];
@@ -119,7 +109,7 @@ export function getWhiteCells(
   for (let i = 0; i < h; i++) {
     for (let j = 0; j < v; j++) {
       let blackCell = false;
-      for (var k = 0; k < blackCells.length; k++) {
+      for (let k = 0; k < blackCells.length; k++) {
         const bCell = blackCells[k];
         if (bCell.x === i && bCell.y === j) {
           blackCell = true;
@@ -143,23 +133,23 @@ export type AllClues = {
 export function figureOutClues(
   acSquares: number,
   dnSquares: number,
-  whiteSquares
+  whiteSquares: Array<Coord>,
 ): AllClues {
   /* Collect clues and write in numbers */
-  var acrossClues: ClueMap = {};
-  var downClues: ClueMap = {};
-  var clueNumber = 1;
+  const acrossClues: ClueMap = {};
+  const downClues: ClueMap = {};
+  let clueNumber = 1;
   /* loop from right to left then top to bottom */
-  for (var j = 0; j < dnSquares; j++) {
-    for (var i = 0; i < acSquares; i++) {
-      var cell = new Coord(i, j);
-      var acrossCount = 0;
-      var downCount = 0;
+  for (let j = 0; j < dnSquares; j++) {
+    for (let i = 0; i < acSquares; i++) {
+      const cell = new Coord(i, j);
+      let acrossCount = 0;
+      let downCount = 0;
       if (cellInArray(whiteSquares, cell)) {
         /* Start of across clue */
         if (i === 0 || !cellInArray(whiteSquares, new Coord(i - 1, j))) {
           acrossCount = 1;
-          for (var k = i + 1; k < acSquares; k++) {
+          for (let k = i + 1; k < acSquares; k++) {
             if (cellInArray(whiteSquares, new Coord(k, j))) {
               acrossCount += 1;
             } else {
@@ -173,7 +163,7 @@ export function figureOutClues(
         /* Start of down clue */
         if (j === 0 || !cellInArray(whiteSquares, new Coord(i, j - 1))) {
           downCount = 1;
-          for (var l = j + 1; l < dnSquares; l++) {
+          for (let l = j + 1; l < dnSquares; l++) {
             if (cellInArray(whiteSquares, new Coord(i, l))) {
               downCount += 1;
             } else {
