@@ -1,4 +1,3 @@
-import React from "react";
 import { ClueDetails, Direction, DIRNAME } from "./utils";
 
 interface CurrentClueProps {

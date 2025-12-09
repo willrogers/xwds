@@ -1,5 +1,3 @@
-import React from "react";
-
 import { AC, AllClues, ClueSeq, Coord, DN } from "./utils";
 import { EmptyCell, FilledCell } from "./cells";
 

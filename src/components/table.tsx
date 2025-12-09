@@ -1,4 +1,3 @@
-import React from "react";
 import { BasicsData } from "../lib/data";
 
 function getTableRows(data: BasicsData[]): React.ReactElement[] {
