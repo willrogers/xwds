@@ -11,6 +11,12 @@
   width: 32px;
 }
 
+@media (min-width: 1025px) {
+  #keyboard-button {
+    display: none;
+  }
+}
+
 #keyboard {
   display: flex;
   flex-direction: column;

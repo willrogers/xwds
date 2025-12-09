@@ -319,11 +319,7 @@ const CrosswordPage = (props: {
           hideKeyboardPressed={() => setShowKeyboard(false)}
         />
       )}
-      {!showKeyboard && (
-        <KeyboardButton
-          keyboardPressed={() => setShowKeyboard(!showKeyboard)}
-        />
-      )}
+      <KeyboardButton keyboardPressed={() => setShowKeyboard(!showKeyboard)} />
     </>
   );
 };
