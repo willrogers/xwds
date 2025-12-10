@@ -1,6 +1,6 @@
 [
   {
-    "title": "Christmas Crossword 2025",
+    "title": "A playful rather than professional Christmas Crossword 2025",
     "preamble": "One clue is released for each day of Christmas.",
     "across-size": 7,
     "down-size": 7,
@@ -23,59 +23,59 @@
       "ac": [
         {
           "number": "1",
-          "clue": "[tree]",
+          "clue": "Reverse if first part of ridge leads to tree that doesn't bear pears",
           "length": [3],
-          "date": 4
+          "date": 12
         },
         {
           "number": "3",
           "clue": "Short maid coming back for short woman",
           "length": [3],
-          "date": 4
+          "date": 5
         },
         {
           "number": "5",
-          "clue": "Release a French lock",
+          "clue": "Release a French hen at first, I can cook it up",
           "length": [7],
-          "date": 4
+          "date": 10
         },
         {
           "number": "6",
-          "clue": "[leap]",
+          "clue": "Squash palm tree (cut down), leaping about",
           "length": [7],
-          "date": 4
+          "date": 3
         },
         {
           "number": "9",
           "clue": "Drum music",
           "length": [3],
-          "date": 4
+          "date": 1
         },
         {
           "number": "10",
           "clue": "Calling bird?",
           "length": [3],
-          "date": 4
+          "date": 9
         }
       ],
       "dn": [
         {
           "number": "1",
           "clue": "Laying of bets in state after state",
-          "length": [7],
-          "date": 4
+          "length": [6],
+          "date": 7
         },
         {
           "number": "2",
-          "clue": "[gold]",
+          "clue": "Mythical bird? Ring church about it",
           "length": [3],
-          "date": 4
+          "date": 8
         },
         {
           "number": "3",
           "clue": "South-east, a turtle's home",
           "length": [3],
-          "date": 4
+          "date": 11
         },
         {
           "number": "4",
@@ -85,15 +85,15 @@
         },
         {
           "number": "7",
-          "clue": "Snake swimming in spa",
+          "clue": "Dangerous animal swimming in spa",
           "length": [3],
-          "date": 4
+          "date": 6
         },
         {
           "number": "8",
           "clue": "Criticise piper",
           "length": [7],
-          "date": 4
+          "date": 2
         }
       ]
     },
