@@ -10,8 +10,10 @@ import {
   Direction,
   cellInClue,
   figureOutClues,
+  getClueReleaseDate,
   getWhiteCells,
 } from "./utils";
+
 import { Keyboard, KeyboardButton } from "../components/keyboard";
 import { useCookies } from "react-cookie";
 import { Grid } from "./grid";
@@ -20,8 +22,7 @@ import { ClueBox, CurrentClue } from "./clues";
 const CrosswordPage = (props: {
   title: string;
   preamble: string;
-  year: number;
-  month: number;
+  startDate: string;
   acrossSize: number;
   downSize: number;
   blackSquares: any;
@@ -41,21 +42,29 @@ const CrosswordPage = (props: {
     }
   }, [cookie.cells]);
   const clueArrays: {
-    [AC]: { [key: number]: [string, number, number] };
-    [DN]: { [key: number]: [string, number, number] };
+    [AC]: { [key: number]: [string, number, Date] };
+    [DN]: { [key: number]: [string, number, Date] };
   } = { [AC]: {}, [DN]: {} };
   (props.rawClues[AC] || []).forEach((element: any) => {
+    const releaseDate = getClueReleaseDate(
+      props.startDate,
+      element["day-number"]
+    );
     clueArrays[AC][element.number] = [
       element.clue,
       element.length,
-      element.date,
+      releaseDate,
     ];
   });
   (props.rawClues.dn || []).forEach((element: any) => {
+    const releaseDate = getClueReleaseDate(
+      props.startDate,
+      element["day-number"]
+    );
     clueArrays[DN][element.number] = [
       element.clue,
       element.length,
-      element.date,
+      releaseDate,
     ];
   });
 
@@ -259,6 +268,7 @@ const CrosswordPage = (props: {
       clues[selectedClueSeq.direction]
     )) {
       const [, letters, date] = clueArrays[clueSeq.direction][parseInt(num)];
+      console.log("date:", date);
       const clueDets = new ClueDetails(num, clueSeq, date);
       if (clueSeq.equals(selectedClueSeq) && !clueDets.equals(selectedClue)) {
         setSelectedClue(clueDets);
@@ -278,12 +288,7 @@ const CrosswordPage = (props: {
       <Layout>
         <h2>{props.title}</h2>
         <p>{props.preamble}</p>
-        <CurrentClue
-          clue={selectedClue}
-          clueText={clueText}
-          year={props.year}
-          month={props.month}
-        ></CurrentClue>
+        <CurrentClue clue={selectedClue} clueText={clueText}></CurrentClue>
         <div style={{ margin: "5px" }} id="xwd-container">
           <Grid
             cells={cells}
@@ -301,16 +306,12 @@ const CrosswordPage = (props: {
           clues={clueArrays[AC]}
           onClick={clueClicked}
           selectedClue={selectedClue}
-          year={props.year}
-          month={props.month}
         />
         <ClueBox
           direction={DN}
           clues={clueArrays[DN]}
           onClick={clueClicked}
           selectedClue={selectedClue}
-          year={props.year}
-          month={props.month}
         />
       </Layout>
       {showKeyboard && (

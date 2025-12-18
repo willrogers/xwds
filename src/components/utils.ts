@@ -56,11 +56,11 @@ export class ClueSeq {
 export class ClueDetails {
   num: string;
   clue: ClueSeq;
-  releaseDay: number;
-  constructor(num: string, clue: ClueSeq, releaseDay: number) {
+  releaseDate: Date;
+  constructor(num: string, clue: ClueSeq, releaseDate: Date) {
     this.num = num;
     this.clue = clue;
-    this.releaseDay = releaseDay;
+    this.releaseDate = releaseDate;
   }
   equals(other: ClueDetails | null): boolean {
     return (
@@ -101,7 +101,7 @@ export function cellInClue(clue: ClueSeq, cell: Coord): boolean {
 export function getWhiteCells(
   h: number,
   v: number,
-  blackCells: Array<Coord>,
+  blackCells: Array<Coord>
 ): [Array<Coord>, Array<[number, number, boolean]>] {
   const cells: Array<[number, number, boolean]> = [];
   const whiteCells: Array<Coord> = [];
@@ -130,10 +130,20 @@ export type AllClues = {
   [DN]: ClueMap;
 };
 
+/**
+ * Calculate the release date for a clue based on the crossword's start date and the clue's day offset
+ */
+export function getClueReleaseDate(startDate: string, dayNumber: number): Date {
+  const start = new Date(startDate);
+  const releaseDate = new Date(start);
+  releaseDate.setDate(start.getDate() + dayNumber - 1);
+  return releaseDate;
+}
+
 export function figureOutClues(
   acSquares: number,
   dnSquares: number,
-  whiteSquares: Array<Coord>,
+  whiteSquares: Array<Coord>
 ): AllClues {
   /* Collect clues and write in numbers */
   const acrossClues: ClueMap = {};

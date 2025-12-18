@@ -4,6 +4,7 @@ import path from "path";
 export interface XwdData {
   title: string;
   preamble: string;
+  "start-date": string; // ISO date string (YYYY-MM-DD)
   "across-size": number;
   "down-size": number;
   "black-squares": number[][];
@@ -12,13 +13,13 @@ export interface XwdData {
       number: string;
       clue: string;
       length: number | number[];
-      date: number;
+      "day-number": number; // Days from startDate when this clue is revealed
     }>;
     dn: Array<{
       number: string;
       clue: string;
       length: number | number[];
-      date: number;
+      "day-number": number; // Days from startDate when this clue is revealed
     }>;
   };
 }

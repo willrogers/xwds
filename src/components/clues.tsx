@@ -3,22 +3,20 @@ import { ClueDetails, Direction, DIRNAME } from "./utils";
 interface CurrentClueProps {
   clue: ClueDetails | null;
   clueText: string;
-  year: number;
-  month: number;
 }
 
 export function CurrentClue(props: CurrentClueProps) {
   let id = "";
   let text = "No clue selected.";
   if (props.clue !== null) {
-    const { num, clue, releaseDay } = props.clue;
+    const { num, clue, releaseDate } = props.clue;
     id = `${num} ${clue.direction}`;
     const now = new Date();
-    const releaseDate = new Date(props.year, props.month, releaseDay);
+    console.log("releaseDate:", releaseDate);
     const words =
       now > releaseDate
         ? props.clueText
-        : `Released on December ${releaseDay}.`;
+        : `Released on ${releaseDate.toLocaleDateString()}.`;
 
     text = `${words}\u00A0(${clue.length})`;
   }
@@ -50,11 +48,9 @@ export function CurrentClue(props: CurrentClueProps) {
 
 export function ClueBox(props: {
   onClick: any;
-  clues: { [key: number]: [string, number, number] };
+  clues: { [key: number]: [string, number, Date] };
   direction: Direction;
   selectedClue: ClueDetails | null;
-  year: number;
-  month: number;
 }) {
   function clueBoxOnClick(number: string) {
     props.onClick(number, props.direction);
@@ -81,13 +77,14 @@ export function ClueBox(props: {
       {Object.entries(props.clues).map((entry) => {
         const [number, vals] = entry;
         const selected = props.direction === direction && number === num;
-        const [clueText, len, releaseDay] = vals;
+        const [clueText, len, releaseDate] = vals;
 
         const now = new Date();
-        const releaseDate = new Date(props.year, props.month, releaseDay);
-        const today = now.getDate() === releaseDay;
+        const today = now.toDateString() === releaseDate.toDateString();
         const text =
-          now > releaseDate ? clueText : `Released on December ${releaseDay}.`;
+          now > releaseDate
+            ? clueText
+            : `Released on ${releaseDate.toLocaleDateString()}.`;
         function onClick() {
           clueBoxOnClick(number);
         }

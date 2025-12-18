@@ -17,8 +17,7 @@ const Crossword2025 = ({ xwdData }: Props) => {
       <CrosswordPage
         title={xwdData.title}
         preamble={xwdData.preamble}
-        year={2024}
-        month={11}
+        startDate={xwdData["start-date"]}
         acrossSize={xwdData["across-size"]}
         downSize={xwdData["down-size"]}
         blackSquares={xwdData["black-squares"]}
