@@ -5,20 +5,33 @@ interface CurrentClueProps {
   clueText: string;
 }
 
+function getClueText(releaseDate: Date, fullClueText: string): string {
+  const now = new Date();
+  if (now > releaseDate) {
+    return fullClueText;
+  } else {
+    const day = releaseDate.getDate();
+    const suffix =
+      day === 1 || day === 21 || day === 31
+        ? "st"
+        : day === 2 || day === 22
+          ? "nd"
+          : day === 3 || day === 23
+            ? "rd"
+            : "th";
+    const month = releaseDate.toLocaleDateString("en-GB", { month: "long" });
+    return `Released on the ${day}${suffix} ${month}`;
+  }
+}
+
 export function CurrentClue(props: CurrentClueProps) {
   let id = "";
   let text = "No clue selected.";
   if (props.clue !== null) {
     const { num, clue, releaseDate } = props.clue;
     id = `${num} ${clue.direction}`;
-    const now = new Date();
-    console.log("releaseDate:", releaseDate);
-    const words =
-      now > releaseDate
-        ? props.clueText
-        : `Released on ${releaseDate.toLocaleDateString()}.`;
 
-    text = `${words}\u00A0(${clue.length})`;
+    text = `${getClueText(releaseDate, props.clueText)}\u00A0(${clue.length})`;
   }
   return (
     <div
@@ -81,10 +94,7 @@ export function ClueBox(props: {
 
         const now = new Date();
         const today = now.toDateString() === releaseDate.toDateString();
-        const text =
-          now > releaseDate
-            ? clueText
-            : `Released on ${releaseDate.toLocaleDateString()}.`;
+        const text = getClueText(releaseDate, clueText);
         function onClick() {
           clueBoxOnClick(number);
         }

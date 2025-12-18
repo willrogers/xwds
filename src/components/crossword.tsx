@@ -82,7 +82,6 @@ const CrosswordPage = (props: {
     whiteCells
   );
   function selectNextCell(forwards = true) {
-    console.log(`selected cell ${selectedCell}`);
     if (selectedCell && selectedClueSeq) {
       const x = selectedCell.x;
       const y = selectedCell.y;
@@ -110,8 +109,6 @@ const CrosswordPage = (props: {
       const otherDirClues = Object.values<ClueSeq>(clues[otherDirection]);
 
       for (let i = 0; i < dirClues.length; i++) {
-        console.log(selectedClue);
-        console.log(dirClues[i]);
         if (selectedClueSeq.equals(dirClues[i])) {
           let newClue;
           if (i !== dirClues.length - 1) {
@@ -195,7 +192,6 @@ const CrosswordPage = (props: {
   const keyPressed = (letter: string): void => {
     const backspace = letter === "\u232B" || letter === "Backspace";
     if (letter.match(/^[a-z]$/i) || backspace) {
-      console.log(`selne ${backspace}`);
       const cellContents = backspace ? "" : letter;
       const nextForward = !backspace;
 
@@ -268,7 +264,6 @@ const CrosswordPage = (props: {
       clues[selectedClueSeq.direction]
     )) {
       const [, letters, date] = clueArrays[clueSeq.direction][parseInt(num)];
-      console.log("date:", date);
       const clueDets = new ClueDetails(num, clueSeq, date);
       if (clueSeq.equals(selectedClueSeq) && !clueDets.equals(selectedClue)) {
         setSelectedClue(clueDets);
