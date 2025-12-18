@@ -12,13 +12,13 @@ self.__BUILD_MANIFEST = {
     "static/chunks/ab73f41963a765e6.js"
   ],
   "/xwd2020": [
-    "static/chunks/1448b4fc482fa520.js"
+    "static/chunks/9fe39dd6126501b0.js"
   ],
   "/xwd2024": [
-    "static/chunks/dc95df3a05edc462.js"
+    "static/chunks/693ab97dea993793.js"
   ],
   "/xwd2025": [
-    "static/chunks/9112e75e908ca261.js"
+    "static/chunks/c592597058551960.js"
   ],
   "__rewrites": {
     "afterFiles": [],

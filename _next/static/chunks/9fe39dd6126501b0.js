@@ -1,7 +1,7 @@
 __turbopack_load_page_chunks__("/xwd2020", [
-  "static/chunks/ef4d4ec6825fb9f2.js",
+  "static/chunks/692ab3ecfa902c38.js",
   "static/chunks/07b7076c0da1b6cc.js",
-  "static/chunks/895e94ba1006993c.js",
+  "static/chunks/1fd2d7a0468a9f9e.js",
   "static/chunks/9c6960388bea95db.js",
-  "static/chunks/turbopack-1b4df9c9e65e0d23.js"
+  "static/chunks/turbopack-a32addce04d55ca8.js"
 ])
