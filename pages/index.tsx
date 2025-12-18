@@ -20,6 +20,9 @@ const IndexPage = () => (
         <li>
           <Link href="/xwd2024">The 2024 Advent Crossword</Link>
         </li>
+        <li>
+          <Link href="/xwd2025">The 2025 Christmas Crossword</Link>
+        </li>
       </ul>
     </Layout>
   </>
