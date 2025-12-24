@@ -9,7 +9,7 @@ const IndexPage = () => (
       <title>Crosswords</title>
     </Head>
     <Layout>
-      <h1>Crosswords (updated)</h1>
+      <h1>Crosswords</h1>
       <ul>
         <li>
           <Link href="/basics">Some help for new starters</Link>
