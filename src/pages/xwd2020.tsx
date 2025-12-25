@@ -1,14 +1,14 @@
 import Head from "next/head";
 import { GetStaticProps } from "next";
 
-import CrosswordPage from "../src/components/crossword";
-import { getXwdData, XwdData } from "../src/lib/data";
+import CrosswordPage from "../components/crossword";
+import { getXwdData, XwdData } from "../lib/data";
 
 interface Props {
   xwdData: XwdData;
 }
 
-const Crossword2025 = ({ xwdData }: Props) => {
+const Crossword2020 = ({ xwdData }: Props) => {
   return (
     <>
       <Head>
@@ -28,9 +28,9 @@ const Crossword2025 = ({ xwdData }: Props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const xwdData = getXwdData("2025");
+  const xwdData = getXwdData("2020");
 
   return { props: { xwdData } };
 };
 
-export default Crossword2025;
+export default Crossword2020;

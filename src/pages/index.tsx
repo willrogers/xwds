@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 
-import Layout from "../src/components/layout";
+import Layout from "../components/layout";
 
 const IndexPage = () => (
   <>

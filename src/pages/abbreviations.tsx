@@ -2,12 +2,12 @@ import { useState } from "react";
 import Head from "next/head";
 import { GetStaticProps } from "next";
 
-import Layout from "../src/components/layout";
-import Table from "../src/components/table";
+import Layout from "../components/layout";
+import Table from "../components/table";
 import {
   getAbbreviationsData as getAbbreviationsData,
   AbbreviationsData as AbbreviationsData,
-} from "../src/lib/data";
+} from "../lib/data";
 import styles from "./abbreviations.module.css";
 
 interface Props {
