@@ -74,6 +74,14 @@
     "values": [["gi", ""]]
   },
   {
+    "definition": "soldiers",
+    "values": [["or", "Other Ranks"]]
+  },
+  {
+    "definition": "soldiers",
+    "values": [["re", "Royal Engineers"]]
+  },
+  {
     "definition": "street",
     "values": [["st", ""]]
   }
