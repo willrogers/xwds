@@ -1,28 +1,42 @@
-import { BasicsData } from "../lib/data";
+import { AbbreviationsData } from "../lib/data";
+import styles from "./table.module.css";
 
-function getTableRows(data: BasicsData[]): React.ReactElement[] {
+function getTableRows(
+  data: AbbreviationsData[],
+  filterString: string
+): React.ReactElement[] {
+  let filterStringLower = filterString.toLowerCase();
   const tableRows: React.ReactElement[] = [];
   data.forEach((word, wordIndex) => {
     word.values.forEach((value, valueIndex) => {
-      tableRows.push(
-        <tr key={`${wordIndex}-${valueIndex}`}>
-          <td>{word.definition}</td>
-          <td>{value[0]}</td>
-          <td>{value[1]}</td>
-        </tr>
-      );
+      if (
+        word.definition.toLowerCase().includes(filterStringLower) ||
+        value[0].toLowerCase().includes(filterStringLower) ||
+        value[1].toLowerCase().includes(filterStringLower)
+      ) {
+        tableRows.push(
+          <tr key={`${wordIndex}-${valueIndex}`}>
+            <td>{word.definition}</td>
+            <td>{value[0]}</td>
+            <td>{value[1]}</td>
+          </tr>
+        );
+      }
     });
   });
   return tableRows;
 }
 
 interface Props {
-  basicsData: BasicsData[];
+  abbreviationsData: AbbreviationsData[];
+  filterString: string;
 }
 
-const Table = ({ basicsData }: Props) => {
+const Table = ({ abbreviationsData, filterString }: Props) => {
+  let rows = getTableRows(abbreviationsData, filterString);
+
   return (
-    <table>
+    <table className={styles.table}>
       <thead>
         <tr>
           <th>Definition</th>
@@ -30,7 +44,7 @@ const Table = ({ basicsData }: Props) => {
           <th>Comments</th>
         </tr>
       </thead>
-      <tbody>{getTableRows(basicsData)}</tbody>
+      <tbody>{rows}</tbody>
     </table>
   );
 };

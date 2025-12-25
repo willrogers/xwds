@@ -24,7 +24,7 @@ export interface XwdData {
   };
 }
 
-export interface BasicsData {
+export interface AbbreviationsData {
   definition: string;
   values: Array<[string, string]>;
 }
@@ -36,8 +36,8 @@ export function getXwdData(year: string): XwdData {
   return data[0]; // The JSON files contain arrays with a single object
 }
 
-export function getBasicsData(): BasicsData[] {
-  const filePath = path.join(process.cwd(), "static", "basics.json");
+export function getAbbreviationsData(): AbbreviationsData[] {
+  const filePath = path.join(process.cwd(), "static", "abbreviations.json");
   const fileContents = fs.readFileSync(filePath, "utf8");
   return JSON.parse(fileContents);
 }

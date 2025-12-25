@@ -12,7 +12,7 @@ const IndexPage = () => (
       <h1>Crosswords</h1>
       <ul>
         <li>
-          <Link href="/basics">Some help for new starters</Link>
+          <Link href="/abbreviations">Some help for new starters</Link>
         </li>
         <li>
           <Link href="/xwd2020">The 2020 Advent Crossword</Link>
