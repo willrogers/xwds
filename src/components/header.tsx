@@ -35,7 +35,7 @@ const Header = (props: { parentUrl: string }) => {
           </svg>
         </div>
         <input type="checkbox" id="toggle-menu" defaultChecked />
-        <nav>
+        <nav className="hide-menu">
           <div id="menu-header">
             <a href={props.parentUrl + "/index.html"}>WR</a>
             <img
